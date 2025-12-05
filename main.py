@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
+from markupsafe import Markup
 from openai import OpenAI
+import markdown
 import os
 
 app = Flask(__name__)
@@ -133,14 +135,15 @@ Stated risk tolerance: {risk_tolerance}
 
             try:
                 response = client.chat.completions.create(
-                    model="gpt-4.1-mini",
+                    model="gpt-4o-mini",
                     messages=[
                         {"role": "system", "content": BASE_PROMPT},
                         {"role": "user", "content": user_input},
                     ],
                     temperature=0.2,
                 )
-                result = response.choices[0].message.content
+                raw_result = response.choices[0].message.content or ""
+                result = Markup(markdown.markdown(raw_result, extensions=['tables', 'fenced_code']))
             except Exception as e:
                 error = f"An error occurred while calling the API: {str(e)}"
 
