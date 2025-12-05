@@ -32,11 +32,24 @@
       <div class="result-content">{{ result }}</div>
       
       <div class="results-actions">
-        <a href="/" class="btn-secondary">← Start New Evaluation</a>
+        <button onclick="startNewEvaluation()" class="btn-secondary">← Start New Evaluation</button>
         <button onclick="window.print()" class="btn-primary">Print / Save PDF</button>
       </div>
     {% endif %}
   </main>
 </div>
+
+<script>
+function startNewEvaluation() {
+  // Clear all form data from sessionStorage
+  Object.keys(sessionStorage).forEach(key => {
+    if (key.startsWith('gov_')) {
+      sessionStorage.removeItem(key);
+    }
+  });
+  // Redirect to the form
+  window.location.href = '/';
+}
+</script>
 </body>
 </html>
