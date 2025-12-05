@@ -85,6 +85,7 @@ def index():
         short_description = request.form.get("short_description", "").strip()
         ai_type = request.form.get("ai_type", "").strip()
         new_or_update = request.form.get("new_or_update", "").strip()
+        primary_intent = request.form.get("primary_intent", "").strip()
 
         problem = request.form.get("problem", "").strip()
         who_problem = request.form.get("who_problem", "").strip()
@@ -110,6 +111,7 @@ System name: {system_name}
 Short description: {short_description}
 AI type: {ai_type}
 New or update: {new_or_update}
+Primary intent: {primary_intent}
 
 [SECTION 2: PURPOSE & CONCEPT]
 Problem it solves: {problem}
