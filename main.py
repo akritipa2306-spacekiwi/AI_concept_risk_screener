@@ -113,6 +113,12 @@ def index():
         data_sources = request.form.get("data_sources", "").strip()
         personal_data = request.form.get("personal_data", "").strip()
         third_parties = request.form.get("third_parties", "").strip()
+        
+        # Context of Use
+        deployment_context = request.form.get("deployment_context", "").strip()
+        level_of_autonomy = request.form.get("level_of_autonomy", "").strip()
+        deployment_notes = request.form.get("deployment_notes", "").strip()
+        
         provenance = request.form.get("provenance", "").strip()
         
         # Human annotators section
@@ -121,6 +127,11 @@ def index():
         labour_safeguards = request.form.get("labour_safeguards", "").strip()
         pay_verified = request.form.get("pay_verified", "").strip()
         vulnerable_annotators = request.form.get("vulnerable_annotators", "").strip()
+        
+        # Planned safeguards
+        safeguards = request.form.getlist("safeguards")
+        safeguards_str = ", ".join(safeguards) if safeguards else "None selected"
+        custom_safeguards = request.form.get("custom_safeguards", "").strip()
 
         primary_users = request.form.get("primary_users", "").strip()
         affected_groups = request.form.get("affected_groups", "").strip()
@@ -150,12 +161,17 @@ MVP description: {mvp_description}
 Data sources: {data_sources}
 Personal / sensitive data involved: {personal_data}
 Third-party models / APIs / vendors: {third_parties}
+Deployment context: {deployment_context}
+Level of autonomy: {level_of_autonomy}
+Deployment notes: {deployment_notes}
 Data provenance / licensing notes: {provenance}
 Uses human annotators/reviewers/moderators: {uses_annotators}
 Annotation source: {annotation_source}
 Labour safeguards: {labour_safeguards}
 Pay is fair & verified: {pay_verified}
 Vulnerable annotator groups: {vulnerable_annotators}
+Planned safeguards / mitigations: {safeguards_str}
+Custom safeguards: {custom_safeguards}
 
 [SECTION 4: STAKEHOLDERS & IMPACT]
 Primary users: {primary_users}

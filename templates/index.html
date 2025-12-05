@@ -191,17 +191,49 @@
           </div>
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label for="third_parties">Third-party models / APIs / vendors</label>
-            <textarea id="third_parties" name="third_parties"
-                      placeholder="LLM providers, SaaS tools, labeling vendors."></textarea>
+        <div class="field">
+          <label for="third_parties">Third-party models / APIs / vendors</label>
+          <textarea id="third_parties" name="third_parties"
+                    placeholder="LLM providers, SaaS tools, labeling vendors."></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="group-label">Context of Use</label>
+          <div class="grid-2">
+            <div class="field">
+              <label for="deployment_context">Deployment Context</label>
+              <select id="deployment_context" name="deployment_context">
+                <option value="">Select one</option>
+                <option>Internal tool</option>
+                <option>Customer-facing app</option>
+                <option>Integrated into product</option>
+                <option>Background automation</option>
+                <option>Mobile app</option>
+                <option>Unknown</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="level_of_autonomy">Level of Autonomy</label>
+              <select id="level_of_autonomy" name="level_of_autonomy">
+                <option value="">Select one</option>
+                <option>Fully automated</option>
+                <option>Human-in-the-loop</option>
+                <option>Human-on-the-loop</option>
+                <option>Manual trigger / AI assist only</option>
+              </select>
+            </div>
           </div>
           <div class="field">
-            <label for="provenance">Data provenance / licensing</label>
-            <textarea id="provenance" name="provenance"
-                      placeholder="Where data comes from, any licensing or ToS dependencies."></textarea>
+            <label for="deployment_notes">Anything specific about deployment? (optional)</label>
+            <textarea id="deployment_notes" name="deployment_notes"
+                      placeholder="Any additional context about how this will be deployed."></textarea>
           </div>
+        </div>
+
+        <div class="field">
+          <label for="provenance">Data provenance / licensing</label>
+          <textarea id="provenance" name="provenance"
+                    placeholder="Where data comes from, any licensing or ToS dependencies."></textarea>
         </div>
 
         <div class="field conditional-section">
@@ -235,6 +267,49 @@
                           placeholder="Any concerns about annotator wellbeing or exploitation?"></textarea>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="group-label">Planned Safeguards / Mitigations</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="Human-in-the-loop review" />
+              <span>Human-in-the-loop review</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="Access restrictions / role-based controls" />
+              <span>Access restrictions / role-based controls</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="Audit logging" />
+              <span>Audit logging</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="Abuse monitoring" />
+              <span>Abuse monitoring</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="Explainability provided to user" />
+              <span>Explainability provided to user</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="Manual override" />
+              <span>Manual override</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="Rate limits / safety filters" />
+              <span>Rate limits / safety filters</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="safeguards" value="None planned yet" />
+              <span>None planned yet</span>
+            </label>
+          </div>
+          <div class="field">
+            <label for="custom_safeguards">Describe any custom safeguards (optional)</label>
+            <textarea id="custom_safeguards" name="custom_safeguards"
+                      placeholder="Any additional safeguards or mitigations you're planning."></textarea>
           </div>
         </div>
 

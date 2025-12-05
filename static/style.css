@@ -490,6 +490,22 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
+.field-group {
+  margin: 24px 0;
+  padding: 20px;
+  background: var(--seafoam-pale);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.group-label {
+  display: block;
+  font-weight: 600;
+  color: var(--cyan-dark);
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
 @media print {
   .top-bar,
   .results-actions {
