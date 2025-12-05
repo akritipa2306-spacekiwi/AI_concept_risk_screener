@@ -114,6 +114,13 @@ def index():
         personal_data = request.form.get("personal_data", "").strip()
         third_parties = request.form.get("third_parties", "").strip()
         provenance = request.form.get("provenance", "").strip()
+        
+        # Human annotators section
+        uses_annotators = "Yes" if request.form.get("uses_annotators") else "No"
+        annotation_source = request.form.get("annotation_source", "").strip()
+        labour_safeguards = request.form.get("labour_safeguards", "").strip()
+        pay_verified = request.form.get("pay_verified", "").strip()
+        vulnerable_annotators = request.form.get("vulnerable_annotators", "").strip()
 
         primary_users = request.form.get("primary_users", "").strip()
         affected_groups = request.form.get("affected_groups", "").strip()
@@ -143,6 +150,11 @@ Data sources: {data_sources}
 Personal / sensitive data involved: {personal_data}
 Third-party models / APIs / vendors: {third_parties}
 Data provenance / licensing notes: {provenance}
+Uses human annotators/reviewers/moderators: {uses_annotators}
+Annotation source: {annotation_source}
+Labour safeguards: {labour_safeguards}
+Pay is fair & verified: {pay_verified}
+Vulnerable annotator groups: {vulnerable_annotators}
 
 [SECTION 4: STAKEHOLDERS & IMPACT]
 Primary users: {primary_users}

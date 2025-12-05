@@ -468,6 +468,28 @@ body {
   font-weight: 500;
 }
 
+.standalone-checkbox {
+  margin-bottom: 16px;
+}
+
+.conditional-section {
+  margin-top: 8px;
+}
+
+.conditional-fields {
+  display: none;
+  margin-top: 16px;
+  padding: 20px;
+  background: var(--seafoam-pale);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.conditional-fields.visible {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
 @media print {
   .top-bar,
   .results-actions {

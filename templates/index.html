@@ -204,6 +204,40 @@
           </div>
         </div>
 
+        <div class="field conditional-section">
+          <label class="checkbox-item standalone-checkbox">
+            <input type="checkbox" id="uses_annotators" name="uses_annotators" value="yes" />
+            <span>Does any part of this system rely on human annotators, reviewers, or moderators?</span>
+          </label>
+          
+          <div class="conditional-fields" id="annotator-fields">
+            <div class="grid-2">
+              <div class="field">
+                <label for="annotation_source">Annotation source</label>
+                <textarea id="annotation_source" name="annotation_source"
+                          placeholder="In-house team, crowdsourcing platform, vendor, etc."></textarea>
+              </div>
+              <div class="field">
+                <label for="labour_safeguards">Labour safeguards</label>
+                <textarea id="labour_safeguards" name="labour_safeguards"
+                          placeholder="Contracts, working conditions, dispute resolution, etc."></textarea>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <label for="pay_verified">Pay is fair & verified</label>
+                <textarea id="pay_verified" name="pay_verified"
+                          placeholder="How is fair pay ensured and verified?"></textarea>
+              </div>
+              <div class="field">
+                <label for="vulnerable_annotators">Vulnerable annotator groups</label>
+                <textarea id="vulnerable_annotators" name="vulnerable_annotators"
+                          placeholder="Any concerns about annotator wellbeing or exploitation?"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="actions">
           <button type="button" class="btn-secondary" id="back3">← Back</button>
           <button type="button" class="btn-primary" id="next3">Next →</button>
@@ -284,12 +318,35 @@ fields.forEach(field => {
   const key = "gov_" + field.id;
   const saved = sessionStorage.getItem(key);
   if (saved !== null) {
-    field.value = saved;
+    if (field.type === "checkbox") {
+      field.checked = saved === "true";
+    } else {
+      field.value = saved;
+    }
   }
   field.addEventListener("input", () => {
-    sessionStorage.setItem(key, field.value);
+    if (field.type === "checkbox") {
+      sessionStorage.setItem(key, field.checked);
+    } else {
+      sessionStorage.setItem(key, field.value);
+    }
   });
 });
+
+// Conditional fields toggle for annotators section
+const annotatorsCheckbox = document.getElementById("uses_annotators");
+const annotatorFields = document.getElementById("annotator-fields");
+
+function toggleAnnotatorFields() {
+  if (annotatorsCheckbox.checked) {
+    annotatorFields.classList.add("visible");
+  } else {
+    annotatorFields.classList.remove("visible");
+  }
+}
+
+annotatorsCheckbox.addEventListener("change", toggleAnnotatorFields);
+toggleAnnotatorFields();
 </script>
 </body>
 </html>
