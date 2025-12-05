@@ -25,38 +25,47 @@ Always respond in CLEAN MARKDOWN with these headings:
 
 ### 1. SYSTEM INTAKE
 Summarize:
-- Proposed AI system
-- New vs update
-- AI type
+- Proposed AI system name and description
+- New system vs update to existing
+- AI type (e.g., generative, predictive, classification, etc.)
+- Primary intent / use case
+- Regulatory exposure triggers (biometric data, minors, employment, housing, credit, health)
 
 ### 2. PURPOSE & CONCEPT CLARITY
 Summarize and critique:
-- Problem it solves
-- Who experiences this problem today
-- Value created by AI
-- Non-AI alternative today
+- Problem it solves and who experiences it today
+- Value created by AI vs non-AI alternatives
 - How success will be measured
-- MVP definition (is it realistic?)
+- MVP definition (is it realistic and appropriately scoped?)
 
 ### 3. LEGAL & DATA FOUNDATIONS
 Assess:
-- Personal / sensitive data
-- Data sources and provenance
-- Third-party models / vendors
-- Any consent, IP, licensing, or data-protection risks
-- Any labour / human-rights concerns for annotations or data collection
+- Data sources and provenance / licensing status
+- Personal / sensitive data involved
+- Third-party models, APIs, or vendors and their risks
+- Deployment context (internal tool, customer-facing, embedded in product, etc.)
+- Level of autonomy (fully automated vs human-in-the-loop vs manual trigger)
+- Human annotator/moderator considerations:
+  - Are annotators used? If so, evaluate annotation source
+  - Labour safeguards, fair pay verification, and vulnerable worker protections
+- Planned safeguards and mitigations:
+  - Evaluate adequacy of selected safeguards (human review, access controls, audit logging, abuse monitoring, explainability, manual override, rate limits, etc.)
+  - Note any gaps or missing safeguards given the system's risk profile
 
 ### 4. STAKEHOLDER & IMPACT ASSESSMENT
 Analyse:
-- Primary users
-- Affected / vulnerable groups
-- Potential harms if it works as intended
-- Potential harms if it fails or misbehaves
+- Primary users and how they will interact with the system
+- Affected / vulnerable groups (including non-users and downstream populations)
+- Harm pathways that may apply:
+  - Bias/unfair outcomes, incorrect/unsafe decisions, exclusion/denial of service
+  - Privacy intrusion, IP/licensing issues, labour exploitation
+  - Security vulnerabilities, misuse or dual-use risks
 - Alignment with the stated risk tolerance
+- Potential harms if it works as intended vs if it fails or misbehaves
 
 ### 5. IMPACT TRIAGE
-Provide explicit ratings:
-- External impact risk: Low / Medium / High (with one-sentence justification)
+Provide explicit ratings with brief justifications:
+- External impact risk: Low / Medium / High
 - Internal failure risk: Low / Medium / High
 - Regulatory sensitivity: Low / Medium / High
 - Governance level needed: Lightweight / Moderate / Full
@@ -64,8 +73,9 @@ Provide explicit ratings:
 ### 6. FEASIBILITY GATE (GO / NO-GO)
 Give:
 - Overall recommendation: **GO**, **GO WITH CONDITIONS**, or **NO-GO**
-- Bullet list of required mitigations (if any)
-- Bullet list of unknowns / missing information that should be clarified
+- Bullet list of required mitigations or conditions (if any)
+- Bullet list of unknowns / missing information that should be clarified before proceeding
+- Any additional safeguards recommended beyond those already planned
 """
 
 # ---------- OpenAI client ----------
