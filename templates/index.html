@@ -1,66 +1,250 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>AI Governance Ideation Assistant</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 40px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.1);
-        }
-        textarea {
-            width: 100%;
-            height: 140px;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-        button {
-            margin-top: 15px;
-            background: #4A7BFF;
-            color: white;
-            padding: 12px 18px;
-            border: none;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .output {
-            margin-top: 20px;
-            white-space: pre-wrap;
-            background: #eef3ff;
-            padding: 15px;
-            border-radius: 10px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>AI Governance Ideation Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="container">
-    <h2>AI Governance Ideation Assistant</h2>
-    <form method="POST">
-        <textarea name="user_input" placeholder="Describe your AI idea or begin the ideation process..."></textarea>
-        <button type="submit">Generate Analysis</button>
+<div class="page">
+  <header class="top-bar">
+    <div class="logo-pill">AI</div>
+    <div class="top-text">
+      <div class="top-title">Governance Ideation</div>
+      <div class="top-subtitle">Lightweight MVP for early-stage startups</div>
+    </div>
+  </header>
+
+  <main class="card">
+    <h1>Ideation Wizard</h1>
+    <p class="intro">
+      Step through a few quick questions to see whether your AI idea should be built — 
+      using structured governance checks.
+    </p>
+
+    <!-- Step indicator dots -->
+    <div class="steps-indicator">
+      <span class="dot active" data-step="1"></span>
+      <span class="dot" data-step="2"></span>
+      <span class="dot" data-step="3"></span>
+      <span class="dot" data-step="4"></span>
+    </div>
+
+    <form method="POST" id="wizardForm">
+      <!-- STEP 1: SYSTEM INTAKE -->
+      <section class="wizard-step active" data-step="1">
+        <h2>Step 1 · System Intake</h2>
+        <p class="step-subtitle">Capture the basic shape of your AI system idea.</p>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="system_name">System name</label>
+            <input id="system_name" name="system_name" placeholder="e.g., FairScreen Rentals" />
+          </div>
+          <div class="field">
+            <label for="ai_type">AI type</label>
+            <input id="ai_type" name="ai_type" placeholder="LLM feature, classifier, recommender, etc." />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="short_description">Short description</label>
+            <textarea id="short_description" name="short_description"
+                      placeholder="One or two sentences describing what this AI will do."></textarea>
+          </div>
+          <div class="field">
+            <label for="new_or_update">New or update?</label>
+            <select id="new_or_update" name="new_or_update">
+              <option value="">Select one</option>
+              <option>New system</option>
+              <option>Update to existing system</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-primary" id="next1">Next →</button>
+        </div>
+      </section>
+
+      <!-- STEP 2: PURPOSE & CONCEPT -->
+      <section class="wizard-step" data-step="2">
+        <h2>Step 2 · Purpose & Concept</h2>
+        <p class="step-subtitle">Clarify the problem, value, and MVP.</p>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="problem">What problem does this solve?</label>
+            <textarea id="problem" name="problem"
+                      placeholder="Describe the core problem in plain language."></textarea>
+          </div>
+          <div class="field">
+            <label for="who_problem">Who experiences this problem today?</label>
+            <textarea id="who_problem" name="who_problem"
+                      placeholder="Teams, roles, or customer segments."></textarea>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="value_created">What value does AI create?</label>
+            <textarea id="value_created" name="value_created"
+                      placeholder="Time saved, risk reduced, revenue, etc."></textarea>
+          </div>
+          <div class="field">
+            <label for="non_ai_alt">Non-AI alternative today</label>
+            <textarea id="non_ai_alt" name="non_ai_alt"
+                      placeholder="Manual processes, existing tools, etc."></textarea>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="success_metrics">How will success be measured?</label>
+            <textarea id="success_metrics" name="success_metrics"
+                      placeholder="e.g., 50% less review time, fewer errors."></textarea>
+          </div>
+          <div class="field">
+            <label for="mvp_description">MVP – what ships first?</label>
+            <textarea id="mvp_description" name="mvp_description"
+                      placeholder="Smallest version that still delivers value."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="back2">← Back</button>
+          <button type="button" class="btn-primary" id="next2">Next →</button>
+        </div>
+      </section>
+
+      <!-- STEP 3: LEGAL & DATA FOUNDATIONS -->
+      <section class="wizard-step" data-step="3">
+        <h2>Step 3 · Legal & Data Foundations</h2>
+        <p class="step-subtitle">Surface data, provenance, and third-party risks early.</p>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="data_sources">Data sources</label>
+            <textarea id="data_sources" name="data_sources"
+                      placeholder="Internal databases, logs, public data, etc."></textarea>
+          </div>
+          <div class="field">
+            <label for="personal_data">Personal / sensitive data involved?</label>
+            <textarea id="personal_data" name="personal_data"
+                      placeholder="Health data, financial data, biometrics, etc."></textarea>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="third_parties">Third-party models / APIs / vendors</label>
+            <textarea id="third_parties" name="third_parties"
+                      placeholder="LLM providers, SaaS tools, labeling vendors."></textarea>
+          </div>
+          <div class="field">
+            <label for="provenance">Data provenance / licensing</label>
+            <textarea id="provenance" name="provenance"
+                      placeholder="Where data comes from, any licensing or ToS dependencies."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="back3">← Back</button>
+          <button type="button" class="btn-primary" id="next3">Next →</button>
+        </div>
+      </section>
+
+      <!-- STEP 4: STAKEHOLDERS & IMPACT -->
+      <section class="wizard-step" data-step="4">
+        <h2>Step 4 · Stakeholders & Impact</h2>
+        <p class="step-subtitle">Map who is affected and how much risk you’re willing to carry.</p>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="primary_users">Primary users</label>
+            <textarea id="primary_users" name="primary_users"
+                      placeholder="Teams or customer segments who will directly use this AI."></textarea>
+          </div>
+          <div class="field">
+            <label for="affected_groups">Affected groups (including vulnerable)</label>
+            <textarea id="affected_groups" name="affected_groups"
+                      placeholder="Non-users, downstream groups, or vulnerable populations."></textarea>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="harms">Potential harms or concerns</label>
+            <textarea id="harms" name="harms"
+                      placeholder="Bias, unfair denial, job impact, incorrect decisions, etc."></textarea>
+          </div>
+          <div class="field">
+            <label for="risk_tolerance">Risk tolerance</label>
+            <select id="risk_tolerance" name="risk_tolerance">
+              <option value="">Select one</option>
+              <option>Low – very cautious</option>
+              <option>Medium – some risk acceptable</option>
+              <option>High – aggressive experimentation</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="back4">← Back</button>
+          <button type="submit" class="btn-primary">Evaluate →</button>
+        </div>
+      </section>
     </form>
 
     {% if error %}
-    <div class="output" style="background: #ffe0e0; color: #c00;">
-        {{ error }}
-    </div>
+      <div class="result error">{{ error }}</div>
     {% endif %}
 
     {% if result %}
-    <div class="output">
-        {{ result }}
-    </div>
+      <section class="result-card">
+        <h2>Governance Evaluation</h2>
+        <pre class="result-text">{{ result }}</pre>
+      </section>
     {% endif %}
+  </main>
 </div>
+
+<script>
+// Simple multi-step wizard with basic persistence (fields retain values when moving back/next)
+let currentStep = 1;
+const totalSteps = 4;
+
+function showStep(step) {
+  currentStep = step;
+  document.querySelectorAll(".wizard-step").forEach(sec => {
+    sec.classList.toggle("active", Number(sec.dataset.step) === step);
+  });
+  document.querySelectorAll(".dot").forEach(dot => {
+    dot.classList.toggle("active", Number(dot.dataset.step) === step);
+  });
+}
+
+// Navigation buttons
+document.getElementById("next1").onclick = () => showStep(2);
+document.getElementById("next2").onclick = () => showStep(3);
+document.getElementById("next3").onclick = () => showStep(4);
+document.getElementById("back2").onclick = () => showStep(1);
+document.getElementById("back3").onclick = () => showStep(2);
+document.getElementById("back4").onclick = () => showStep(3);
+
+// Optional: sessionStorage to survive refreshes
+const fields = document.querySelectorAll("input, textarea, select");
+fields.forEach(field => {
+  const key = "gov_" + field.id;
+  const saved = sessionStorage.getItem(key);
+  if (saved !== null) {
+    field.value = saved;
+  }
+  field.addEventListener("input", () => {
+    sessionStorage.setItem(key, field.value);
+  });
+});
+</script>
 </body>
 </html>

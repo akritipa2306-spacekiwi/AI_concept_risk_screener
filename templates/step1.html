@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Step 1 – Concept & Basics{% endblock %}
+{% block step_indicator %}
+  <div class="step-dot active"></div>
+  <div class="step-dot"></div>
+  <div class="step-dot"></div>
+  <div class="step-dot"></div>
+  <span>Step 1 of 4</span>
+{% endblock %}
+
+{% block content %}
+<div class="card-header">
+    <div class="card-title">Step 1 · Concept & System Basics</div>
+    <div class="card-subtitle">
+        Capture a clear snapshot of the AI idea before we assess risk.
+    </div>
+</div>
+
+<form method="post">
+    <div class="form-grid full">
+        <div class="form-field">
+            <label for="system_name">AI System Name</label>
+            <input type="text" id="system_name" name="system_name" placeholder="e.g., FairScreen Rentals">
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="short_description">Short Description</label>
+            <textarea id="short_description" name="short_description" placeholder="One or two lines on what this AI will do."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="ai_type">AI Type</label>
+            <select id="ai_type" name="ai_type">
+                <option value="">Select type</option>
+                <option value="LLM feature / chatbot">LLM feature / chatbot</option>
+                <option value="Classifier / scoring model">Classifier / scoring model</option>
+                <option value="Recommender system">Recommender system</option>
+                <option value="Retrieval / RAG app">Retrieval / RAG app</option>
+                <option value="Other">Other</option>
+            </select>
+            <div class="hint">Rough categorization is enough for ideation.</div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button type="submit" class="btn btn-primary">Next →</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title or "AI Governance Ideation Assistant" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg: #f4fafc;
+            --card-bg: #ffffff;
+            --accent: #0f9bbf;    /* deep cyan */
+            --accent-soft: #c0f0ea; /* seafoam */
+            --accent-dark: #06627a;
+            --text-main: #163047;
+            --muted: #6b7a8a;
+            --danger: #c0392b;
+            --shadow-soft: 0 14px 35px rgba(0, 0, 0, 0.05);
+            --radius-card: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top left, #e3f8ff, #f7fbfd 50%, #e9fbf7);
+            color: var(--text-main);
+        }
+
+        .page {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 0 16px 48px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .brand-text-title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .brand-text-sub {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+        }
+
+        .step-dot.active {
+            background: var(--accent-dark);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-soft);
+            padding: 24px 24px 28px;
+        }
+
+        .card-header {
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 20px;
+            margin-top: 16px;
+        }
+
+        .form-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .hint {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            border-radius: 10px;
+            border: 1px solid #d3dde8;
+            padding: 8px 11px;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 36px;
+        }
+
+        textarea {
+            min-height: 70px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(15, 155, 191, 0.12);
+        }
+
+        .buttons {
+            margin-top: 22px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #c5d3e0;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #ffffff;
+            box-shadow: 0 12px 24px rgba(6, 98, 122, 0.25);
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.03);
+        }
+
+        .error-box {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #fdecea;
+            color: var(--danger);
+            font-size: 12px;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-soft);
+            padding: 24px;
+        }
+
+        .result-content h2 {
+            margin-top: 0;
+            color: var(--accent-dark);
+        }
+
+        .result-content h3 {
+            color: var(--text-main);
+        }
+
+        .result-content ul {
+            padding-left: 18px;
+        }
+
+        .result-content li {
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .page {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <div class="brand">
+            <div class="brand-logo">AI</div>
+            <div>
+                <div class="brand-text-title">Governance Ideation</div>
+                <div class="brand-text-sub">Lightweight MVP for early-stage startups</div>
+            </div>
+        </div>
+        <div class="step-indicator">
+            {% block step_indicator %}{% endblock %}
+        </div>
+    </div>
+
+    <div class="card">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</body>
+</html>

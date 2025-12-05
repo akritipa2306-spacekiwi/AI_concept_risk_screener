@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Step 3 – Data & Legal{% endblock %}
+{% block step_indicator %}
+  <div class="step-dot active"></div>
+  <div class="step-dot active"></div>
+  <div class="step-dot active"></div>
+  <div class="step-dot"></div>
+  <span>Step 3 of 4</span>
+{% endblock %}
+
+{% block content %}
+<div class="card-header">
+    <div class="card-title">Step 3 · Data & Legal Foundations</div>
+    <div class="card-subtitle">
+        Surface data, provenance, and jurisdiction risks early.
+    </div>
+</div>
+
+<form method="post">
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="data_sources">What data sources will you use?</label>
+            <textarea id="data_sources" name="data_sources" placeholder="Internal logs, CRM, public web data, vendor datasets, etc."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="personal_data">Does this involve personal or sensitive data?</label>
+            <textarea id="personal_data" name="personal_data" placeholder="If yes, describe the types (PII, health, financial, etc.)."></textarea>
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="third_party">Any third-party APIs or models?</label>
+            <textarea id="third_party" name="third_party" placeholder="e.g., OpenAI API, third-party classifier, vendor-hosted model."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="deployment_region">Where will this be deployed?</label>
+            <textarea id="deployment_region" name="deployment_region" placeholder="e.g., EU, US, Canada, or global user base."></textarea>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a href="{{ url_for('step2') }}" class="btn btn-secondary">← Back</a>
+        <button type="submit" class="btn btn-primary">Next →</button>
+    </div>
+</form>
+{% endblock %}

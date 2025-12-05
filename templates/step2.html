@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Step 2 – Purpose & MVP{% endblock %}
+{% block step_indicator %}
+  <div class="step-dot active"></div>
+  <div class="step-dot active"></div>
+  <div class="step-dot"></div>
+  <div class="step-dot"></div>
+  <span>Step 2 of 4</span>
+{% endblock %}
+
+{% block content %}
+<div class="card-header">
+    <div class="card-title">Step 2 · Purpose, Value & MVP</div>
+    <div class="card-subtitle">
+        Clarify why this should exist and what “good” looks like.
+    </div>
+</div>
+
+<form method="post">
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="problem">What problem does it solve?</label>
+            <textarea id="problem" name="problem" placeholder="Describe the core problem in plain language."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="who_problem">Who experiences this problem today?</label>
+            <textarea id="who_problem" name="who_problem" placeholder="Which teams, roles, or users feel this the most?"></textarea>
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="value_created">What value does the AI create?</label>
+            <textarea id="value_created" name="value_created" placeholder="Time saved, improved decisions, better UX, etc."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="non_ai_alternative">What non-AI alternative exists today?</label>
+            <textarea id="non_ai_alternative" name="non_ai_alternative" placeholder="Manual process, existing tooling, or 'nothing exists'."></textarea>
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="success_metrics">How will you measure success?</label>
+            <textarea id="success_metrics" name="success_metrics" placeholder="e.g., reduce handling time by 20%, fewer errors, better NPS."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="mvp_description">What is the MVP?</label>
+            <textarea id="mvp_description" name="mvp_description" placeholder="Describe the smallest version that still delivers value."></textarea>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a href="{{ url_for('step1') }}" class="btn btn-secondary">← Back</a>
+        <button type="submit" class="btn btn-primary">Next →</button>
+    </div>
+</form>
+{% endblock %}

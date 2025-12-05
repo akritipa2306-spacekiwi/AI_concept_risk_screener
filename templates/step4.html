@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Step 4 – Stakeholders & Impact{% endblock %}
+{% block step_indicator %}
+  <div class="step-dot active"></div>
+  <div class="step-dot active"></div>
+  <div class="step-dot active"></div>
+  <div class="step-dot active"></div>
+  <span>Step 4 of 4</span>
+{% endblock %}
+
+{% block content %}
+<div class="card-header">
+    <div class="card-title">Step 4 · Stakeholders & Impact</div>
+    <div class="card-subtitle">
+        Map who is affected and how much risk your org is willing to carry.
+    </div>
+</div>
+
+<form method="post">
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="primary_users">Primary users</label>
+            <textarea id="primary_users" name="primary_users" placeholder="Teams, roles, or customer segments who will directly use this AI."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="affected_groups">Affected groups (including vulnerable)</label>
+            <textarea id="affected_groups" name="affected_groups" placeholder="Non-users, downstream groups, or vulnerable populations who might be impacted."></textarea>
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-field">
+            <label for="potential_harms">Potential harms or concerns</label>
+            <textarea id="potential_harms" name="potential_harms" placeholder="Bias, unfair denial, job impact, incorrect decisions, etc."></textarea>
+        </div>
+        <div class="form-field">
+            <label for="risk_tolerance">Risk tolerance</label>
+            <select id="risk_tolerance" name="risk_tolerance">
+                <option value="">Select one</option>
+                <option value="Low">Low – prefer very safe, low-impact use cases</option>
+                <option value="Medium">Medium – willing to accept moderate risk with good mitigation</option>
+                <option value="High">High – aggressive innovation, higher risk appetite</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <a href="{{ url_for('step3') }}" class="btn btn-secondary">← Back</a>
+        <button type="submit" class="btn btn-primary">Evaluate →</button>
+    </div>
+</form>
+{% endblock %}

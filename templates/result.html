@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Evaluation Result{% endblock %}
+{% block step_indicator %}
+  <span>Ideation Evaluation</span>
+{% endblock %}
+
+{% block content %}
+<div class="card-header">
+    <div class="card-title">Ideation-Stage Governance Evaluation</div>
+    <div class="card-subtitle">
+        Based on your inputs across the 4 steps.
+    </div>
+</div>
+
+<div class="result-card">
+    {% if error %}
+        <div class="error-box">{{ error }}</div>
+    {% elif html_output %}
+        <div class="result-content">
+            {{ html_output|safe }}
+        </div>
+    {% else %}
+        <p>No result yet. Please restart the wizard.</p>
+    {% endif %}
+</div>
+
+<div class="buttons" style="margin-top: 20px;">
+    <a href="{{ url_for('step1') }}" class="btn btn-secondary">Start New Evaluation</a>
+</div>
+{% endblock %}
