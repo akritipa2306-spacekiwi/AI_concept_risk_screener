@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 from markupsafe import Markup
 from openai import OpenAI
 import markdown
 import os
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
 
 # ---------- Compressed governance prompt ----------
 BASE_PROMPT = """
@@ -74,38 +75,36 @@ client = OpenAI(api_key=api_key) if api_key else None
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    result = None
-    error = None
-
     if request.method == "POST":
         if not client:
-            error = "OpenAI API key is not configured in Replit Secrets."
-        else:
-            # Collect all fields from the wizard
-            system_name = request.form.get("system_name", "").strip()
-            short_description = request.form.get("short_description", "").strip()
-            ai_type = request.form.get("ai_type", "").strip()
-            new_or_update = request.form.get("new_or_update", "").strip()
+            session['error'] = "OpenAI API key is not configured in Replit Secrets."
+            return redirect(url_for('results'))
+        
+        # Collect all fields from the wizard
+        system_name = request.form.get("system_name", "").strip()
+        short_description = request.form.get("short_description", "").strip()
+        ai_type = request.form.get("ai_type", "").strip()
+        new_or_update = request.form.get("new_or_update", "").strip()
 
-            problem = request.form.get("problem", "").strip()
-            who_problem = request.form.get("who_problem", "").strip()
-            value_created = request.form.get("value_created", "").strip()
-            non_ai_alt = request.form.get("non_ai_alt", "").strip()
-            success_metrics = request.form.get("success_metrics", "").strip()
-            mvp_description = request.form.get("mvp_description", "").strip()
+        problem = request.form.get("problem", "").strip()
+        who_problem = request.form.get("who_problem", "").strip()
+        value_created = request.form.get("value_created", "").strip()
+        non_ai_alt = request.form.get("non_ai_alt", "").strip()
+        success_metrics = request.form.get("success_metrics", "").strip()
+        mvp_description = request.form.get("mvp_description", "").strip()
 
-            data_sources = request.form.get("data_sources", "").strip()
-            personal_data = request.form.get("personal_data", "").strip()
-            third_parties = request.form.get("third_parties", "").strip()
-            provenance = request.form.get("provenance", "").strip()
+        data_sources = request.form.get("data_sources", "").strip()
+        personal_data = request.form.get("personal_data", "").strip()
+        third_parties = request.form.get("third_parties", "").strip()
+        provenance = request.form.get("provenance", "").strip()
 
-            primary_users = request.form.get("primary_users", "").strip()
-            affected_groups = request.form.get("affected_groups", "").strip()
-            harms = request.form.get("harms", "").strip()
-            risk_tolerance = request.form.get("risk_tolerance", "").strip()
+        primary_users = request.form.get("primary_users", "").strip()
+        affected_groups = request.form.get("affected_groups", "").strip()
+        harms = request.form.get("harms", "").strip()
+        risk_tolerance = request.form.get("risk_tolerance", "").strip()
 
-            # Build a single structured prompt for GPT
-            user_input = f"""
+        # Build a single structured prompt for GPT
+        user_input = f"""
 [SECTION 1: SYSTEM INTAKE]
 System name: {system_name}
 Short description: {short_description}
@@ -133,21 +132,39 @@ Potential harms or concerns: {harms}
 Stated risk tolerance: {risk_tolerance}
 """
 
-            try:
-                response = client.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=[
-                        {"role": "system", "content": BASE_PROMPT},
-                        {"role": "user", "content": user_input},
-                    ],
-                    temperature=0.2,
-                )
-                raw_result = response.choices[0].message.content or ""
-                result = Markup(markdown.markdown(raw_result, extensions=['tables', 'fenced_code']))
-            except Exception as e:
-                error = f"An error occurred while calling the API: {str(e)}"
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": BASE_PROMPT},
+                    {"role": "user", "content": user_input},
+                ],
+                temperature=0.2,
+            )
+            raw_result = response.choices[0].message.content or ""
+            session['result'] = markdown.markdown(raw_result, extensions=['tables', 'fenced_code'])
+            session['error'] = None
+        except Exception as e:
+            session['error'] = f"An error occurred while calling the API: {str(e)}"
+            session['result'] = None
 
-    return render_template("index.html", result=result, error=error)
+        return redirect(url_for('results'))
+
+    return render_template("index.html")
+
+
+@app.route("/results")
+def results():
+    result = session.pop('result', None)
+    error = session.pop('error', None)
+    
+    if result:
+        result = Markup(result)
+    
+    if not result and not error:
+        return redirect(url_for('index'))
+    
+    return render_template("results.html", result=result, error=error)
 
 
 if __name__ == "__main__":

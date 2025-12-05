@@ -380,3 +380,46 @@ body {
 .result-content tr:nth-child(even) {
   background: var(--input-bg);
 }
+
+.results-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--seafoam-pale);
+}
+
+.results-header h1 {
+  margin-bottom: 8px;
+}
+
+.results-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 2px solid var(--seafoam-pale);
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.results-actions .btn-secondary,
+.results-actions .btn-primary {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media print {
+  .top-bar,
+  .results-actions {
+    display: none;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: none;
+  }
+  
+  .page {
+    padding: 0;
+  }
+}

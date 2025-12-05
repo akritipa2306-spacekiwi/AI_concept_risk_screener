@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Governance Evaluation Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="page">
+  <header class="top-bar">
+    <div class="logo-pill">AI</div>
+    <div class="top-text">
+      <div class="top-title">Governance Ideation</div>
+      <div class="top-subtitle">Lightweight MVP for early-stage startups</div>
+    </div>
+  </header>
+
+  <main class="card">
+    <div class="results-header">
+      <h1>Governance Evaluation</h1>
+      <p class="intro">Here's the detailed assessment of your AI system idea based on governance best practices.</p>
+    </div>
+
+    {% if error %}
+      <div class="result error">{{ error }}</div>
+      <div class="actions" style="margin-top: 24px;">
+        <a href="/" class="btn-secondary">← Back to Wizard</a>
+      </div>
+    {% endif %}
+
+    {% if result %}
+      <div class="result-content">{{ result }}</div>
+      
+      <div class="results-actions">
+        <a href="/" class="btn-secondary">← Start New Evaluation</a>
+        <button onclick="window.print()" class="btn-primary">Print / Save PDF</button>
+      </div>
+    {% endif %}
+  </main>
+</div>
+</body>
+</html>
