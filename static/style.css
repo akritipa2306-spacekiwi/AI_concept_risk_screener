@@ -163,6 +163,10 @@ body {
   margin-bottom: 20px;
 }
 
+.field + .field {
+  margin-top: 20px;
+}
+
 @media (max-width: 640px) {
   .grid-2 {
     grid-template-columns: 1fr;
