@@ -87,6 +87,37 @@
           </select>
         </div>
 
+        <div class="field regulatory-section">
+          <label class="section-label">Does this use case trigger regulatory exposure?</label>
+          <p class="field-hint">Select all that apply:</p>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" name="reg_biometric" value="yes" />
+              <span>Uses biometric data</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="reg_minors" value="yes" />
+              <span>Involves minors</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="reg_employment" value="yes" />
+              <span>Involves employment decisions</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="reg_housing" value="yes" />
+              <span>Involves housing decisions</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="reg_credit" value="yes" />
+              <span>Involves credit or financial eligibility</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="reg_health" value="yes" />
+              <span>Involves health information</span>
+            </label>
+          </div>
+        </div>
+
         <div class="actions">
           <button type="button" class="btn-primary" id="next1">Next →</button>
         </div>

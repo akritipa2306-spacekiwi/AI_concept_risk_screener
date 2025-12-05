@@ -86,6 +86,22 @@ def index():
         ai_type = request.form.get("ai_type", "").strip()
         new_or_update = request.form.get("new_or_update", "").strip()
         primary_intent = request.form.get("primary_intent", "").strip()
+        
+        # Regulatory exposure checkboxes
+        reg_triggers = []
+        if request.form.get("reg_biometric"):
+            reg_triggers.append("Uses biometric data")
+        if request.form.get("reg_minors"):
+            reg_triggers.append("Involves minors")
+        if request.form.get("reg_employment"):
+            reg_triggers.append("Involves employment decisions")
+        if request.form.get("reg_housing"):
+            reg_triggers.append("Involves housing decisions")
+        if request.form.get("reg_credit"):
+            reg_triggers.append("Involves credit or financial eligibility")
+        if request.form.get("reg_health"):
+            reg_triggers.append("Involves health information")
+        regulatory_exposure = ", ".join(reg_triggers) if reg_triggers else "None selected"
 
         problem = request.form.get("problem", "").strip()
         who_problem = request.form.get("who_problem", "").strip()
@@ -112,6 +128,7 @@ Short description: {short_description}
 AI type: {ai_type}
 New or update: {new_or_update}
 Primary intent: {primary_intent}
+Regulatory exposure triggers: {regulatory_exposure}
 
 [SECTION 2: PURPOSE & CONCEPT]
 Problem it solves: {problem}
