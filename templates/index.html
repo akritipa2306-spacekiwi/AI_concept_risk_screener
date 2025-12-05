@@ -262,21 +262,52 @@
           </div>
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label for="harms">Potential harms or concerns</label>
-            <textarea id="harms" name="harms"
-                      placeholder="Bias, unfair denial, job impact, incorrect decisions, etc."></textarea>
+        <div class="field">
+          <label>Which harm pathways may apply?</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="Bias or unfair outcomes" />
+              <span>Bias or unfair outcomes</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="Incorrect or unsafe decisions" />
+              <span>Incorrect or unsafe decisions</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="Exclusion or denial of service" />
+              <span>Exclusion or denial of service</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="Privacy intrusion" />
+              <span>Privacy intrusion</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="IP / rights / licensing issues" />
+              <span>IP / rights / licensing issues</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="Labour exploitation (annotation, moderation)" />
+              <span>Labour exploitation (annotation, moderation)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="Security vulnerabilities" />
+              <span>Security vulnerabilities</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="harm_pathways" value="Misuse or dual-use risk" />
+              <span>Misuse or dual-use risk</span>
+            </label>
           </div>
-          <div class="field">
-            <label for="risk_tolerance">Risk tolerance</label>
-            <select id="risk_tolerance" name="risk_tolerance">
-              <option value="">Select one</option>
-              <option>Low – very cautious</option>
-              <option>Medium – some risk acceptable</option>
-              <option>High – aggressive experimentation</option>
-            </select>
-          </div>
+        </div>
+
+        <div class="field">
+          <label for="risk_tolerance">Risk tolerance</label>
+          <select id="risk_tolerance" name="risk_tolerance">
+            <option value="">Select one</option>
+            <option>Low – very cautious</option>
+            <option>Medium – some risk acceptable</option>
+            <option>High – aggressive experimentation</option>
+          </select>
         </div>
 
         <div class="actions">

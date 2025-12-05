@@ -124,7 +124,8 @@ def index():
 
         primary_users = request.form.get("primary_users", "").strip()
         affected_groups = request.form.get("affected_groups", "").strip()
-        harms = request.form.get("harms", "").strip()
+        harm_pathways = request.form.getlist("harm_pathways")
+        harm_pathways_str = ", ".join(harm_pathways) if harm_pathways else "None selected"
         risk_tolerance = request.form.get("risk_tolerance", "").strip()
 
         # Build a single structured prompt for GPT
@@ -159,7 +160,7 @@ Vulnerable annotator groups: {vulnerable_annotators}
 [SECTION 4: STAKEHOLDERS & IMPACT]
 Primary users: {primary_users}
 Affected groups (including vulnerable groups): {affected_groups}
-Potential harms or concerns: {harms}
+Harm pathways that may apply: {harm_pathways_str}
 Stated risk tolerance: {risk_tolerance}
 """
 
