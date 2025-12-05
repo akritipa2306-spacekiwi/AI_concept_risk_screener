@@ -246,8 +246,14 @@ body {
   box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
 }
 
+.grid-2 .field textarea {
+  height: 46px;
+  min-height: 46px;
+  resize: vertical;
+}
+
 .field textarea {
-  min-height: 80px;
+  min-height: 70px;
   resize: vertical;
 }
 
