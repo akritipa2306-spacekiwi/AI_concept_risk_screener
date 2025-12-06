@@ -178,6 +178,50 @@
         <h2>Step 3 · Legal & Data Foundations</h2>
         <p class="step-subtitle">Surface data, provenance, and third-party risks early.</p>
 
+        <div class="field-group">
+          <label class="group-label">Region of Use / Jurisdiction</label>
+          <p class="field-hint">Select all regions where this AI system will be deployed or where users/data subjects are located.</p>
+          <div class="checkbox-grid">
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="United States (General sectoral laws + algorithmic accountability emerging)" />
+              <span>United States (General sectoral laws + algorithmic accountability emerging)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="European Union (GDPR + EU AI Act)" />
+              <span>European Union (GDPR + EU AI Act)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="United Kingdom (UK GDPR + coming AI regulatory principles)" />
+              <span>United Kingdom (UK GDPR + coming AI regulatory principles)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="Canada (PIPEDA + AIDA emerging)" />
+              <span>Canada (PIPEDA + AIDA emerging)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="Australia (Privacy Act + AI Safety Guidelines)" />
+              <span>Australia (Privacy Act + AI Safety Guidelines)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="India (DPDP Act)" />
+              <span>India (DPDP Act)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="Singapore (PDPA + Model AI Governance Framework)" />
+              <span>Singapore (PDPA + Model AI Governance Framework)</span>
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="jurisdictions" value="Other – specify below" />
+              <span>Other – specify below</span>
+            </label>
+          </div>
+          <div class="field">
+            <label for="jurisdiction_notes">Additional notes or mixed-jurisdiction scenarios (optional)</label>
+            <textarea id="jurisdiction_notes" name="jurisdiction_notes"
+                      placeholder="Specify other jurisdictions, cross-border data flows, or complex regulatory scenarios."></textarea>
+          </div>
+        </div>
+
         <div class="grid-2">
           <div class="field">
             <label for="data_sources">Data sources</label>

@@ -40,6 +40,10 @@ Summarize and critique:
 
 ### 3. LEGAL & DATA FOUNDATIONS
 Assess:
+- Jurisdictions and regulatory frameworks:
+  - Identify applicable regulations based on selected regions (GDPR, EU AI Act, US sectoral laws, PIPEDA, DPDP Act, PDPA, etc.)
+  - Flag any cross-border data transfer concerns
+  - Note jurisdiction-specific compliance requirements
 - Data sources and provenance / licensing status
 - Personal / sensitive data involved
 - Third-party models, APIs, or vendors and their risks
@@ -120,6 +124,11 @@ def index():
         success_metrics = request.form.get("success_metrics", "").strip()
         mvp_description = request.form.get("mvp_description", "").strip()
 
+        # Jurisdictions
+        jurisdictions = request.form.getlist("jurisdictions")
+        jurisdictions_str = ", ".join(jurisdictions) if jurisdictions else "None selected"
+        jurisdiction_notes = request.form.get("jurisdiction_notes", "").strip()
+        
         data_sources = request.form.get("data_sources", "").strip()
         personal_data = request.form.get("personal_data", "").strip()
         third_parties = request.form.get("third_parties", "").strip()
@@ -168,6 +177,8 @@ Success will be measured by: {success_metrics}
 MVP description: {mvp_description}
 
 [SECTION 3: LEGAL & DATA FOUNDATIONS]
+Regions / Jurisdictions: {jurisdictions_str}
+Jurisdiction notes: {jurisdiction_notes}
 Data sources: {data_sources}
 Personal / sensitive data involved: {personal_data}
 Third-party models / APIs / vendors: {third_parties}
