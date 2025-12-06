@@ -83,20 +83,9 @@ Give:
 - Bullet list of unknowns / missing information that should be clarified before proceeding
 - Any additional safeguards recommended beyond those already planned
 
-### 7. UNDERSTANDING YOUR SCORE
-Explain what the calculated Governance Readiness Score means for the user:
-
-**70-100 (Green - High Readiness):** The proposed AI system demonstrates strong governance foundations. Low external harm risk, manageable internal failure risk, and clear regulatory pathway. Proceed with standard development practices and periodic governance check-ins.
-
-**40-69 (Yellow - Moderate Readiness):** The proposal shows promise but has governance gaps that need attention before or during development. Address the conditions listed above, strengthen weak areas, and consider additional safeguards. Proceed with caution and enhanced oversight.
-
-**0-39 (Red - Low Readiness):** Significant governance concerns exist. High risk of external harm, regulatory complications, or fundamental gaps in data/legal foundations. Strongly consider whether to proceed, and if so, substantial remediation is required first.
-
-Provide a brief interpretation of what the score means specifically for this proposal.
-
 ---
 
-INTERNAL SCORING (do not display this section, use it only to calculate):
+INTERNAL SCORING METHODOLOGY (use these rules to calculate, do not display in output):
 - External Harm Risk (0-30 pts): Low=30, Medium=15, High=5
 - Internal Failure Risk (0-20 pts): Low=20, Medium=10, High=5
 - Regulatory Sensitivity (0-20 pts): Low=20, Medium=10, High=5

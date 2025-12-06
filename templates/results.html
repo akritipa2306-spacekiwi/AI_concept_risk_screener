@@ -76,6 +76,25 @@
           {% endif %}
         </div>
       </div>
+      
+      <div class="score-ranges">
+        <h3>Understanding Your Score</h3>
+        <div class="range-item range-green">
+          <span class="range-label">70-100</span>
+          <span class="range-title">High Readiness</span>
+          <p>Strong governance foundations. Low external harm risk, manageable internal failure risk, and clear regulatory pathway. Proceed with standard development practices and periodic governance check-ins.</p>
+        </div>
+        <div class="range-item range-yellow">
+          <span class="range-label">40-69</span>
+          <span class="range-title">Moderate Readiness</span>
+          <p>Shows promise but has governance gaps that need attention. Address the conditions listed, strengthen weak areas, and consider additional safeguards. Proceed with caution and enhanced oversight.</p>
+        </div>
+        <div class="range-item range-red">
+          <span class="range-label">0-39</span>
+          <span class="range-title">Low Readiness</span>
+          <p>Significant governance concerns exist. High risk of external harm, regulatory complications, or fundamental gaps in data/legal foundations. Substantial remediation required before proceeding.</p>
+        </div>
+      </div>
       {% endif %}
 
       <div class="result-content">{{ result }}</div>
