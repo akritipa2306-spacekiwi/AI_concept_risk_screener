@@ -29,6 +29,49 @@
     {% endif %}
 
     {% if result %}
+      {% if scores %}
+      <div class="score-card">
+        <div class="score-main">
+          <div class="score-number {% if scores.overall_score >= 70 %}score-green{% elif scores.overall_score >= 40 %}score-yellow{% else %}score-red{% endif %}">
+            {{ scores.overall_score }}
+          </div>
+          <div class="score-label">Governance Readiness Score</div>
+        </div>
+        <div class="score-details">
+          <div class="score-item">
+            <div class="score-item-label">External Impact</div>
+            <div class="score-bar-container">
+              <div class="score-bar {% if scores.external_impact == 'Low' %}bar-green{% elif scores.external_impact == 'Medium' %}bar-yellow{% else %}bar-red{% endif %}" 
+                   style="width: {% if scores.external_impact == 'Low' %}30{% elif scores.external_impact == 'Medium' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge {% if scores.external_impact == 'Low' %}badge-green{% elif scores.external_impact == 'Medium' %}badge-yellow{% else %}badge-red{% endif %}">
+              {{ scores.external_impact }}
+            </span>
+          </div>
+          <div class="score-item">
+            <div class="score-item-label">Internal Failure Risk</div>
+            <div class="score-bar-container">
+              <div class="score-bar {% if scores.internal_failure == 'Low' %}bar-green{% elif scores.internal_failure == 'Medium' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.internal_failure == 'Low' %}30{% elif scores.internal_failure == 'Medium' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge {% if scores.internal_failure == 'Low' %}badge-green{% elif scores.internal_failure == 'Medium' %}badge-yellow{% else %}badge-red{% endif %}">
+              {{ scores.internal_failure }}
+            </span>
+          </div>
+          <div class="score-item">
+            <div class="score-item-label">Regulatory Sensitivity</div>
+            <div class="score-bar-container">
+              <div class="score-bar {% if scores.regulatory_sensitivity == 'Low' %}bar-green{% elif scores.regulatory_sensitivity == 'Medium' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.regulatory_sensitivity == 'Low' %}30{% elif scores.regulatory_sensitivity == 'Medium' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge {% if scores.regulatory_sensitivity == 'Low' %}badge-green{% elif scores.regulatory_sensitivity == 'Medium' %}badge-yellow{% else %}badge-red{% endif %}">
+              {{ scores.regulatory_sensitivity }}
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
       <div class="result-content">{{ result }}</div>
       
       <div class="results-actions">
