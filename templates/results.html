@@ -29,7 +29,7 @@
     {% endif %}
 
     {% if result %}
-      {% if scores %}
+      {% if scores and scores.overall_score is defined %}
       <div class="score-card">
         <div class="score-main">
           <div class="score-number {% if scores.overall_score >= 70 %}score-green{% elif scores.overall_score >= 40 %}score-yellow{% else %}score-red{% endif %}">
@@ -38,6 +38,7 @@
           <div class="score-label">Governance Readiness Score</div>
         </div>
         <div class="score-details">
+          {% if scores.external_impact is defined %}
           <div class="score-item">
             <div class="score-item-label">External Impact</div>
             <div class="score-bar-container">
@@ -48,6 +49,8 @@
               {{ scores.external_impact }}
             </span>
           </div>
+          {% endif %}
+          {% if scores.internal_failure is defined %}
           <div class="score-item">
             <div class="score-item-label">Internal Failure Risk</div>
             <div class="score-bar-container">
@@ -58,6 +61,8 @@
               {{ scores.internal_failure }}
             </span>
           </div>
+          {% endif %}
+          {% if scores.regulatory_sensitivity is defined %}
           <div class="score-item">
             <div class="score-item-label">Regulatory Sensitivity</div>
             <div class="score-bar-container">
@@ -68,6 +73,7 @@
               {{ scores.regulatory_sensitivity }}
             </span>
           </div>
+          {% endif %}
         </div>
       </div>
       {% endif %}
