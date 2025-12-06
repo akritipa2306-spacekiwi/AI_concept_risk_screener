@@ -83,40 +83,27 @@ Give:
 - Bullet list of unknowns / missing information that should be clarified before proceeding
 - Any additional safeguards recommended beyond those already planned
 
-### 7. GOVERNANCE READINESS SCORE
-At the very end of your response, you MUST include a JSON block with scores.
-Calculate a Numerical Governance Readiness Score (0-100) using this methodology:
+### 7. UNDERSTANDING YOUR SCORE
+Explain what the calculated Governance Readiness Score means for the user:
 
-1. External Harm Risk (0-30 points):
-   - Low risk = 30 points
-   - Medium risk = 15 points
-   - High risk = 5 points
+**70-100 (Green - High Readiness):** The proposed AI system demonstrates strong governance foundations. Low external harm risk, manageable internal failure risk, and clear regulatory pathway. Proceed with standard development practices and periodic governance check-ins.
 
-2. Internal Failure Risk (0-20 points):
-   - Low = 20 points
-   - Medium = 10 points
-   - High = 5 points
+**40-69 (Yellow - Moderate Readiness):** The proposal shows promise but has governance gaps that need attention before or during development. Address the conditions listed above, strengthen weak areas, and consider additional safeguards. Proceed with caution and enhanced oversight.
 
-3. Regulatory Sensitivity (0-20 points):
-   - Low = 20 points
-   - Medium = 10 points
-   - High = 5 points
+**0-39 (Red - Low Readiness):** Significant governance concerns exist. High risk of external harm, regulatory complications, or fundamental gaps in data/legal foundations. Strongly consider whether to proceed, and if so, substantial remediation is required first.
 
-4. Data & Legal Soundness (0-20 points):
-   Based on clarity of data provenance, licensing/rights, privacy requirements, cross-border issues, annotator labor ethics:
-   - Excellent = 20 points
-   - Moderate = 10 points
-   - Weak = 5 points
+Provide a brief interpretation of what the score means specifically for this proposal.
 
-5. Purpose & MVP Clarity (0-10 points):
-   Based on problem clarity and solution fit:
-   - Strong = 10 points
-   - Moderate = 5 points
-   - Weak = 2 points
+---
 
-Sum all points to get the final score (0-100).
+INTERNAL SCORING (do not display this section, use it only to calculate):
+- External Harm Risk (0-30 pts): Low=30, Medium=15, High=5
+- Internal Failure Risk (0-20 pts): Low=20, Medium=10, High=5
+- Regulatory Sensitivity (0-20 pts): Low=20, Medium=10, High=5
+- Data & Legal Soundness (0-20 pts): Excellent=20, Moderate=10, Weak=5
+- Purpose & MVP Clarity (0-10 pts): Strong=10, Moderate=5, Weak=2
 
-Return the scores in this EXACT format at the end of your response:
+Return the scores in this EXACT format at the end of your response (this JSON block will be hidden from display):
 ```json
 {
   "overall_score": <number 0-100>,
