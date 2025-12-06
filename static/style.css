@@ -512,6 +512,143 @@ body {
   margin: 0 0 16px 0;
 }
 
+/* Score Card Styles */
+.score-card {
+  display: flex;
+  gap: 40px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--seafoam-pale) 0%, #f0fdfa 100%);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 32px;
+  align-items: center;
+}
+
+.score-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+}
+
+.score-number {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.score-green {
+  color: #10b981;
+}
+
+.score-yellow {
+  color: #f59e0b;
+}
+
+.score-red {
+  color: #ef4444;
+}
+
+.score-label {
+  font-size: 0.875rem;
+  color: #64748b;
+  text-align: center;
+  font-weight: 500;
+}
+
+.score-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.score-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-item-label {
+  min-width: 140px;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.score-bar-container {
+  flex: 1;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.score-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.bar-green {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.bar-yellow {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.bar-red {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.score-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.badge-green {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge-yellow {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-red {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 600px) {
+  .score-card {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+  }
+  
+  .score-item {
+    flex-wrap: wrap;
+  }
+  
+  .score-item-label {
+    min-width: 100%;
+    margin-bottom: 4px;
+  }
+  
+  .score-bar-container {
+    flex: 1;
+    min-width: 100px;
+  }
+}
+
 @media print {
   .top-bar,
   .results-actions {
