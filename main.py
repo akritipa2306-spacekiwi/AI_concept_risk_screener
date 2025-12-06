@@ -80,6 +80,51 @@ Give:
 - Bullet list of required mitigations or conditions (if any)
 - Bullet list of unknowns / missing information that should be clarified before proceeding
 - Any additional safeguards recommended beyond those already planned
+
+### 7. GOVERNANCE READINESS SCORE
+At the very end of your response, you MUST include a JSON block with scores.
+Calculate a Numerical Governance Readiness Score (0-100) using this methodology:
+
+1. External Harm Risk (0-30 points):
+   - Low risk = 30 points
+   - Medium risk = 15 points
+   - High risk = 5 points
+
+2. Internal Failure Risk (0-20 points):
+   - Low = 20 points
+   - Medium = 10 points
+   - High = 5 points
+
+3. Regulatory Sensitivity (0-20 points):
+   - Low = 20 points
+   - Medium = 10 points
+   - High = 5 points
+
+4. Data & Legal Soundness (0-20 points):
+   Based on clarity of data provenance, licensing/rights, privacy requirements, cross-border issues, annotator labor ethics:
+   - Excellent = 20 points
+   - Moderate = 10 points
+   - Weak = 5 points
+
+5. Purpose & MVP Clarity (0-10 points):
+   Based on problem clarity and solution fit:
+   - Strong = 10 points
+   - Moderate = 5 points
+   - Weak = 2 points
+
+Sum all points to get the final score (0-100).
+
+Return the scores in this EXACT format at the end of your response:
+```json
+{
+  "overall_score": <number 0-100>,
+  "external_impact": "<Low/Medium/High>",
+  "internal_failure": "<Low/Medium/High>",
+  "regulatory_sensitivity": "<Low/Medium/High>",
+  "data_legal_soundness": "<Excellent/Moderate/Weak>",
+  "purpose_clarity": "<Strong/Moderate/Weak>"
+}
+```
 """
 
 # ---------- OpenAI client ----------
