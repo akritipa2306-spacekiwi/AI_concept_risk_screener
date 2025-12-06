@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from markupsafe import Markup
 from openai import OpenAI
 import markdown
+import json
+import re
 import os
 
 app = Flask(__name__)
@@ -256,11 +258,26 @@ Stated risk tolerance: {risk_tolerance}
                 temperature=0.2,
             )
             raw_result = response.choices[0].message.content or ""
-            session['result'] = markdown.markdown(raw_result, extensions=['tables', 'fenced_code'])
+            
+            # Extract JSON scores from the response
+            scores = None
+            json_match = re.search(r'```json\s*(\{[^`]+\})\s*```', raw_result, re.DOTALL)
+            if json_match:
+                try:
+                    scores = json.loads(json_match.group(1))
+                except json.JSONDecodeError:
+                    scores = None
+            
+            # Remove the JSON block from the markdown display
+            display_result = re.sub(r'```json\s*\{[^`]+\}\s*```', '', raw_result, flags=re.DOTALL)
+            
+            session['result'] = markdown.markdown(display_result.strip(), extensions=['tables', 'fenced_code'])
+            session['scores'] = scores
             session['error'] = None
         except Exception as e:
             session['error'] = f"An error occurred while calling the API: {str(e)}"
             session['result'] = None
+            session['scores'] = None
 
         return redirect(url_for('results'))
 
@@ -271,6 +288,7 @@ Stated risk tolerance: {risk_tolerance}
 def results():
     result = session.pop('result', None)
     error = session.pop('error', None)
+    scores = session.pop('scores', None)
     
     if result:
         result = Markup(result)
@@ -278,7 +296,7 @@ def results():
     if not result and not error:
         return redirect(url_for('index'))
     
-    return render_template("results.html", result=result, error=error)
+    return render_template("results.html", result=result, error=error, scores=scores)
 
 
 if __name__ == "__main__":
