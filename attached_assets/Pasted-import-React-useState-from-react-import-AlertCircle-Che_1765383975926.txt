@@ -1,0 +1,489 @@
+import React, { useState } from 'react';
+import { AlertCircle, CheckCircle, XCircle, ExternalLink, Search } from 'lucide-react';
+
+const VendorProfilesDB = () => {
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Vendor database - you can export this as JSON
+  const vendors = [
+    {
+      id: 'openai-gpt4',
+      name: 'OpenAI GPT-4',
+      logo: '🤖',
+      category: 'Large Language Model',
+      trainingData: {
+        sources: 'Web crawl, licensed datasets, books, academic papers',
+        cutoffDate: 'September 2021 (GPT-4), April 2023 (GPT-4 Turbo)',
+        geographicCoverage: 'Global with heavy English/Western bias',
+        knownDatasets: 'Common Crawl, WebText, Books corpus (proprietary mix)'
+      },
+      transparency: {
+        level: 'Low',
+        details: 'Does not disclose training data composition, ratios, or specific sources',
+        dataLineage: false,
+        auditability: false
+      },
+      knownBiases: [
+        'Strong English language bias (~90% training data)',
+        'Western cultural perspectives overrepresented',
+        'Recency bias - limited post-2021 knowledge',
+        'Academic and formal writing style bias'
+      ],
+      risks: [
+        { severity: 'high', text: 'No data lineage available for audit' },
+        { severity: 'high', text: 'Cannot verify training data consent/licensing' },
+        { severity: 'medium', text: 'Temporal data limitations (knowledge cutoff)' },
+        { severity: 'medium', text: 'Geographic/cultural bias in outputs' }
+      ],
+      compliance: {
+        gdpr: 'Data processing addendum available',
+        euAiAct: 'Self-identifies as general purpose AI',
+        licensing: 'Prohibits certain use cases (weapons, surveillance, etc.)'
+      },
+      dueDiligenceQuestions: [
+        'What proportion of training data comes from each source category?',
+        'How do you handle copyrighted material in training data?',
+        'What demographic representation exists in your training data?',
+        'Can you provide data lineage for specific model outputs?',
+        'What is your process for removing problematic training data?'
+      ],
+      lastUpdated: '2024-12-01',
+      documentationUrl: 'https://openai.com/research/gpt-4'
+    },
+    {
+      id: 'anthropic-claude',
+      name: 'Anthropic Claude',
+      logo: '🔶',
+      category: 'Large Language Model',
+      trainingData: {
+        sources: 'Web crawl, licensed datasets, books, synthetic data',
+        cutoffDate: 'Early 2024 (Claude 3.5), August 2024 (Claude 3.5 Sonnet new)',
+        geographicCoverage: 'Global with English focus',
+        knownDatasets: 'Undisclosed proprietary mix'
+      },
+      transparency: {
+        level: 'Low-Medium',
+        details: 'Limited disclosure of training data sources; publishes model cards',
+        dataLineage: false,
+        auditability: false
+      },
+      knownBiases: [
+        'English language dominant in training',
+        'Constitutional AI training may affect certain viewpoints',
+        'Western ethical frameworks emphasized',
+        'More cautious/conservative outputs by design'
+      ],
+      risks: [
+        { severity: 'high', text: 'Limited training data transparency' },
+        { severity: 'medium', text: 'Cannot audit data provenance' },
+        { severity: 'medium', text: 'Constitutional AI approach may introduce specific biases' },
+        { severity: 'low', text: 'Regular updates may change model behavior' }
+      ],
+      compliance: {
+        gdpr: 'DPA available, EU data residency options',
+        euAiAct: 'Preparing for compliance',
+        licensing: 'Commercial use permitted with restrictions'
+      },
+      dueDiligenceQuestions: [
+        'What is the breakdown of training data sources?',
+        'How does Constitutional AI training affect outputs for my use case?',
+        'What processes exist for training data quality control?',
+        'Can you provide demographic breakdowns of training data?',
+        'How do you handle copyrighted content in training?'
+      ],
+      lastUpdated: '2024-12-01',
+      documentationUrl: 'https://www.anthropic.com/claude'
+    },
+    {
+      id: 'google-gemini',
+      name: 'Google Gemini',
+      logo: '✨',
+      category: 'Multimodal AI',
+      trainingData: {
+        sources: 'Web crawl, Google products data, licensed content, multimodal data',
+        cutoffDate: 'April 2024 (varies by model version)',
+        geographicCoverage: 'Global, multilingual',
+        knownDatasets: 'YouTube, Google Search, Google Books, undisclosed web data'
+      },
+      transparency: {
+        level: 'Medium',
+        details: 'Some disclosure in technical reports; leverages Google ecosystem data',
+        dataLineage: false,
+        auditability: false
+      },
+      knownBiases: [
+        'Google product ecosystem overrepresentation',
+        'Search ranking biases may affect training data',
+        'YouTube content biases',
+        'Multiple languages but English-dominant'
+      ],
+      risks: [
+        { severity: 'high', text: 'Unclear separation between user data and training data' },
+        { severity: 'high', text: 'YouTube training data may include problematic content' },
+        { severity: 'medium', text: 'Google ecosystem creates unique bias patterns' },
+        { severity: 'medium', text: 'Rapid iteration may affect consistency' }
+      ],
+      compliance: {
+        gdpr: 'Google Cloud DPA applies',
+        euAiAct: 'Working toward compliance',
+        licensing: 'Terms of service restrict certain applications'
+      },
+      dueDiligenceQuestions: [
+        'What Google user data is included in training?',
+        'How is consent obtained for training data from Google products?',
+        'What content moderation exists for YouTube training data?',
+        'Can you separate model versions by training data source?',
+        'What is your data retention and model retraining policy?'
+      ],
+      lastUpdated: '2024-12-01',
+      documentationUrl: 'https://deepmind.google/technologies/gemini/'
+    },
+    {
+      id: 'cohere',
+      name: 'Cohere',
+      logo: '🌊',
+      category: 'Large Language Model',
+      trainingData: {
+        sources: 'Web crawl, curated datasets, enterprise data (with permission)',
+        cutoffDate: 'Varies by model; regularly updated',
+        geographicCoverage: 'Global, multilingual focus',
+        knownDatasets: 'Proprietary curation, emphasis on quality filtering'
+      },
+      transparency: {
+        level: 'Medium',
+        details: 'More transparent about enterprise data handling; publishes model cards',
+        dataLineage: true,
+        auditability: true
+      },
+      knownBiases: [
+        'Curated data may introduce selection bias',
+        'Enterprise focus may affect general knowledge',
+        'Multilingual but quality varies by language',
+        'Business content overrepresented'
+      ],
+      risks: [
+        { severity: 'medium', text: 'Data curation methodology not fully disclosed' },
+        { severity: 'medium', text: 'Enterprise data mixing may create conflicts' },
+        { severity: 'low', text: 'Better data lineage than competitors' },
+        { severity: 'low', text: 'Regular updates require version tracking' }
+      ],
+      compliance: {
+        gdpr: 'Full DPA, data residency options',
+        euAiAct: 'Active compliance preparation',
+        licensing: 'Flexible commercial licensing'
+      },
+      dueDiligenceQuestions: [
+        'What is your data curation methodology?',
+        'How do you separate enterprise customer data from model training?',
+        'Can you provide data lineage for my specific deployment?',
+        'What language-specific biases exist in multilingual models?',
+        'What are your data refresh and versioning practices?'
+      ],
+      lastUpdated: '2024-12-01',
+      documentationUrl: 'https://cohere.com/'
+    },
+    {
+      id: 'huggingface',
+      name: 'Hugging Face (Hosted Models)',
+      logo: '🤗',
+      category: 'Model Repository/Inference',
+      trainingData: {
+        sources: 'Varies by model - community uploaded',
+        cutoffDate: 'Model-dependent',
+        geographicCoverage: 'Model-dependent',
+        knownDatasets: 'Highly variable - check individual model cards'
+      },
+      transparency: {
+        level: 'High',
+        details: 'Model cards required; community driven; variable quality',
+        dataLineage: true,
+        auditability: true
+      },
+      knownBiases: [
+        'Biases vary dramatically by model',
+        'Community models may lack thorough bias testing',
+        'Documentation quality inconsistent',
+        'Older models may have outdated practices'
+      ],
+      risks: [
+        { severity: 'high', text: 'Quality and safety vary dramatically by model' },
+        { severity: 'high', text: 'Some models lack proper documentation' },
+        { severity: 'medium', text: 'Community models may not be maintained' },
+        { severity: 'low', text: 'Transparency generally better than commercial options' }
+      ],
+      compliance: {
+        gdpr: 'User responsible for compliance',
+        euAiAct: 'User responsible for compliance',
+        licensing: 'Varies by model - check individual licenses'
+      },
+      dueDiligenceQuestions: [
+        'Does this specific model have a complete model card?',
+        'Who trained this model and what is their reputation?',
+        'What training data was used for this specific model?',
+        'Has this model been evaluated for bias?',
+        'Is this model actively maintained?',
+        'What is the license for this model?'
+      ],
+      lastUpdated: '2024-12-01',
+      documentationUrl: 'https://huggingface.co/'
+    }
+  ];
+
+  const filteredVendors = vendors.filter(v => 
+    v.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    v.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const getRiskColor = (severity) => {
+    switch(severity) {
+      case 'high': return 'text-red-600 bg-red-50';
+      case 'medium': return 'text-yellow-600 bg-yellow-50';
+      case 'low': return 'text-green-600 bg-green-50';
+      default: return 'text-gray-600 bg-gray-50';
+    }
+  };
+
+  const getTransparencyBadge = (level) => {
+    const badges = {
+      'Low': 'bg-red-100 text-red-800',
+      'Low-Medium': 'bg-orange-100 text-orange-800',
+      'Medium': 'bg-yellow-100 text-yellow-800',
+      'High': 'bg-green-100 text-green-800'
+    };
+    return badges[level] || 'bg-gray-100 text-gray-800';
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">
+            AI Vendor Data Profiles
+          </h1>
+          <p className="text-slate-600 text-lg">
+            Pre-built intelligence on common AI vendors for accurate risk assessment
+          </p>
+        </div>
+
+        {/* Search */}
+        <div className="mb-6 relative">
+          <Search className="absolute left-3 top-3 text-slate-400" size={20} />
+          <input
+            type="text"
+            placeholder="Search vendors..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Vendor List */}
+          <div className="md:col-span-1 space-y-3">
+            {filteredVendors.map(vendor => (
+              <button
+                key={vendor.id}
+                onClick={() => setSelectedVendor(vendor)}
+                className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                  selectedVendor?.id === vendor.id
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-slate-200 bg-white hover:border-slate-300'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">{vendor.logo}</span>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-slate-900 truncate">
+                      {vendor.name}
+                    </h3>
+                    <p className="text-sm text-slate-600 truncate">
+                      {vendor.category}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Vendor Details */}
+          <div className="md:col-span-2">
+            {selectedVendor ? (
+              <div className="bg-white rounded-lg border border-slate-200 p-6 space-y-6">
+                {/* Header */}
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-5xl">{selectedVendor.logo}</span>
+                    <div>
+                      <h2 className="text-2xl font-bold text-slate-900">
+                        {selectedVendor.name}
+                      </h2>
+                      <p className="text-slate-600">{selectedVendor.category}</p>
+                    </div>
+                  </div>
+                  <a
+                    href={selectedVendor.documentationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                  >
+                    Docs <ExternalLink size={16} />
+                  </a>
+                </div>
+
+                {/* Transparency Level */}
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-2">
+                    Data Transparency Level
+                  </h3>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getTransparencyBadge(selectedVendor.transparency.level)}`}>
+                      {selectedVendor.transparency.level}
+                    </span>
+                    <div className="flex gap-2">
+                      {selectedVendor.transparency.dataLineage ? (
+                        <CheckCircle size={20} className="text-green-600" />
+                      ) : (
+                        <XCircle size={20} className="text-red-600" />
+                      )}
+                      <span className="text-sm text-slate-600">Data Lineage</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-600 mt-2">
+                    {selectedVendor.transparency.details}
+                  </p>
+                </div>
+
+                {/* Training Data */}
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-2">
+                    Training Data Profile
+                  </h3>
+                  <div className="bg-slate-50 rounded-lg p-4 space-y-2">
+                    <div>
+                      <span className="text-xs font-medium text-slate-500">Sources:</span>
+                      <p className="text-sm text-slate-700">{selectedVendor.trainingData.sources}</p>
+                    </div>
+                    <div>
+                      <span className="text-xs font-medium text-slate-500">Knowledge Cutoff:</span>
+                      <p className="text-sm text-slate-700">{selectedVendor.trainingData.cutoffDate}</p>
+                    </div>
+                    <div>
+                      <span className="text-xs font-medium text-slate-500">Geographic Coverage:</span>
+                      <p className="text-sm text-slate-700">{selectedVendor.trainingData.geographicCoverage}</p>
+                    </div>
+                    <div>
+                      <span className="text-xs font-medium text-slate-500">Known Datasets:</span>
+                      <p className="text-sm text-slate-700">{selectedVendor.trainingData.knownDatasets}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Known Biases */}
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-2">
+                    Known Biases & Limitations
+                  </h3>
+                  <ul className="space-y-1">
+                    {selectedVendor.knownBiases.map((bias, idx) => (
+                      <li key={idx} className="text-sm text-slate-700 flex items-start gap-2">
+                        <AlertCircle size={16} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                        <span>{bias}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Risk Flags */}
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-2">
+                    Risk Flags
+                  </h3>
+                  <div className="space-y-2">
+                    {selectedVendor.risks.map((risk, idx) => (
+                      <div
+                        key={idx}
+                        className={`px-3 py-2 rounded-lg text-sm ${getRiskColor(risk.severity)}`}
+                      >
+                        <span className="font-medium uppercase text-xs">
+                          {risk.severity} Risk:
+                        </span>{' '}
+                        {risk.text}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Compliance */}
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-2">
+                    Compliance Notes
+                  </h3>
+                  <div className="bg-slate-50 rounded-lg p-4 space-y-2 text-sm">
+                    <div>
+                      <span className="font-medium text-slate-700">GDPR:</span>{' '}
+                      <span className="text-slate-600">{selectedVendor.compliance.gdpr}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-slate-700">EU AI Act:</span>{' '}
+                      <span className="text-slate-600">{selectedVendor.compliance.euAiAct}</span>
+                    </div>
+                    <div>
+                      <span className="font-medium text-slate-700">Licensing:</span>{' '}
+                      <span className="text-slate-600">{selectedVendor.compliance.licensing}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Due Diligence Questions */}
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-700 mb-2">
+                    Due Diligence Questions to Ask This Vendor
+                  </h3>
+                  <ol className="space-y-2">
+                    {selectedVendor.dueDiligenceQuestions.map((question, idx) => (
+                      <li key={idx} className="text-sm text-slate-700 flex gap-2">
+                        <span className="font-medium text-slate-500 flex-shrink-0">
+                          {idx + 1}.
+                        </span>
+                        <span>{question}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {/* Footer */}
+                <div className="pt-4 border-t border-slate-200 text-xs text-slate-500">
+                  Last updated: {selectedVendor.lastUpdated}
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg border border-slate-200 p-12 text-center">
+                <p className="text-slate-500 text-lg">
+                  Select a vendor to view their data profile
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* How to Use */}
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-blue-900 mb-3">
+            💡 How to Integrate This Into Your Risk Screener
+          </h3>
+          <div className="space-y-2 text-sm text-blue-800">
+            <p><strong>Step 1:</strong> In your risk screener form, detect when users enter vendor names (OpenAI, Anthropic, etc.)</p>
+            <p><strong>Step 2:</strong> Auto-populate risk assessment with data from these profiles</p>
+            <p><strong>Step 3:</strong> Add a "View Full Vendor Profile" button that opens this detailed view</p>
+            <p><strong>Step 4:</strong> Include the due diligence questions in your mitigation recommendations</p>
+            <p><strong>Step 5:</strong> Export the vendor profile + risk assessment together as a PDF</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default VendorProfilesDB;

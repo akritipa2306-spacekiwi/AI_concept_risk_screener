@@ -9,6 +9,284 @@ import os
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
 
+# ---------- Vendor Database ----------
+VENDOR_DATABASE = [
+    {
+        "id": "openai-gpt4",
+        "name": "OpenAI GPT-4",
+        "aliases": ["openai", "gpt-4", "gpt4", "chatgpt", "gpt-4o", "gpt-4-turbo", "gpt"],
+        "logo": "🤖",
+        "category": "Large Language Model",
+        "trainingData": {
+            "sources": "Web crawl, licensed datasets, books, academic papers",
+            "cutoffDate": "September 2021 (GPT-4), April 2023 (GPT-4 Turbo)",
+            "geographicCoverage": "Global with heavy English/Western bias",
+            "knownDatasets": "Common Crawl, WebText, Books corpus (proprietary mix)"
+        },
+        "transparency": {
+            "level": "Low",
+            "details": "Does not disclose training data composition, ratios, or specific sources",
+            "dataLineage": False,
+            "auditability": False
+        },
+        "knownBiases": [
+            "Strong English language bias (~90% training data)",
+            "Western cultural perspectives overrepresented",
+            "Recency bias - limited post-2021 knowledge",
+            "Academic and formal writing style bias"
+        ],
+        "risks": [
+            {"severity": "high", "text": "No data lineage available for audit"},
+            {"severity": "high", "text": "Cannot verify training data consent/licensing"},
+            {"severity": "medium", "text": "Temporal data limitations (knowledge cutoff)"},
+            {"severity": "medium", "text": "Geographic/cultural bias in outputs"}
+        ],
+        "compliance": {
+            "gdpr": "Data processing addendum available",
+            "euAiAct": "Self-identifies as general purpose AI",
+            "licensing": "Prohibits certain use cases (weapons, surveillance, etc.)"
+        },
+        "dueDiligenceQuestions": [
+            "What proportion of training data comes from each source category?",
+            "How do you handle copyrighted material in training data?",
+            "What demographic representation exists in your training data?",
+            "Can you provide data lineage for specific model outputs?",
+            "What is your process for removing problematic training data?"
+        ],
+        "lastUpdated": "2024-12-01",
+        "documentationUrl": "https://openai.com/research/gpt-4"
+    },
+    {
+        "id": "anthropic-claude",
+        "name": "Anthropic Claude",
+        "aliases": ["anthropic", "claude", "claude-3", "claude-3.5", "claude sonnet", "claude opus"],
+        "logo": "🔶",
+        "category": "Large Language Model",
+        "trainingData": {
+            "sources": "Web crawl, licensed datasets, books, synthetic data",
+            "cutoffDate": "Early 2024 (Claude 3.5), August 2024 (Claude 3.5 Sonnet new)",
+            "geographicCoverage": "Global with English focus",
+            "knownDatasets": "Undisclosed proprietary mix"
+        },
+        "transparency": {
+            "level": "Low-Medium",
+            "details": "Limited disclosure of training data sources; publishes model cards",
+            "dataLineage": False,
+            "auditability": False
+        },
+        "knownBiases": [
+            "English language dominant in training",
+            "Constitutional AI training may affect certain viewpoints",
+            "Western ethical frameworks emphasized",
+            "More cautious/conservative outputs by design"
+        ],
+        "risks": [
+            {"severity": "high", "text": "Limited training data transparency"},
+            {"severity": "medium", "text": "Cannot audit data provenance"},
+            {"severity": "medium", "text": "Constitutional AI approach may introduce specific biases"},
+            {"severity": "low", "text": "Regular updates may change model behavior"}
+        ],
+        "compliance": {
+            "gdpr": "DPA available, EU data residency options",
+            "euAiAct": "Preparing for compliance",
+            "licensing": "Commercial use permitted with restrictions"
+        },
+        "dueDiligenceQuestions": [
+            "What is the breakdown of training data sources?",
+            "How does Constitutional AI training affect outputs for my use case?",
+            "What processes exist for training data quality control?",
+            "Can you provide demographic breakdowns of training data?",
+            "How do you handle copyrighted content in training?"
+        ],
+        "lastUpdated": "2024-12-01",
+        "documentationUrl": "https://www.anthropic.com/claude"
+    },
+    {
+        "id": "google-gemini",
+        "name": "Google Gemini",
+        "aliases": ["google", "gemini", "bard", "google ai", "gemini pro", "gemini ultra"],
+        "logo": "✨",
+        "category": "Multimodal AI",
+        "trainingData": {
+            "sources": "Web crawl, Google products data, licensed content, multimodal data",
+            "cutoffDate": "April 2024 (varies by model version)",
+            "geographicCoverage": "Global, multilingual",
+            "knownDatasets": "YouTube, Google Search, Google Books, undisclosed web data"
+        },
+        "transparency": {
+            "level": "Medium",
+            "details": "Some disclosure in technical reports; leverages Google ecosystem data",
+            "dataLineage": False,
+            "auditability": False
+        },
+        "knownBiases": [
+            "Google product ecosystem overrepresentation",
+            "Search ranking biases may affect training data",
+            "YouTube content biases",
+            "Multiple languages but English-dominant"
+        ],
+        "risks": [
+            {"severity": "high", "text": "Unclear separation between user data and training data"},
+            {"severity": "high", "text": "YouTube training data may include problematic content"},
+            {"severity": "medium", "text": "Google ecosystem creates unique bias patterns"},
+            {"severity": "medium", "text": "Rapid iteration may affect consistency"}
+        ],
+        "compliance": {
+            "gdpr": "Google Cloud DPA applies",
+            "euAiAct": "Working toward compliance",
+            "licensing": "Terms of service restrict certain applications"
+        },
+        "dueDiligenceQuestions": [
+            "What Google user data is included in training?",
+            "How is consent obtained for training data from Google products?",
+            "What content moderation exists for YouTube training data?",
+            "Can you separate model versions by training data source?",
+            "What is your data retention and model retraining policy?"
+        ],
+        "lastUpdated": "2024-12-01",
+        "documentationUrl": "https://deepmind.google/technologies/gemini/"
+    },
+    {
+        "id": "cohere",
+        "name": "Cohere",
+        "aliases": ["cohere", "cohere ai", "command", "command-r"],
+        "logo": "🌊",
+        "category": "Large Language Model",
+        "trainingData": {
+            "sources": "Web crawl, curated datasets, enterprise data (with permission)",
+            "cutoffDate": "Varies by model; regularly updated",
+            "geographicCoverage": "Global, multilingual focus",
+            "knownDatasets": "Proprietary curation, emphasis on quality filtering"
+        },
+        "transparency": {
+            "level": "Medium",
+            "details": "More transparent about enterprise data handling; publishes model cards",
+            "dataLineage": True,
+            "auditability": True
+        },
+        "knownBiases": [
+            "Curated data may introduce selection bias",
+            "Enterprise focus may affect general knowledge",
+            "Multilingual but quality varies by language",
+            "Business content overrepresented"
+        ],
+        "risks": [
+            {"severity": "medium", "text": "Data curation methodology not fully disclosed"},
+            {"severity": "medium", "text": "Enterprise data mixing may create conflicts"},
+            {"severity": "low", "text": "Better data lineage than competitors"},
+            {"severity": "low", "text": "Regular updates require version tracking"}
+        ],
+        "compliance": {
+            "gdpr": "Full DPA, data residency options",
+            "euAiAct": "Active compliance preparation",
+            "licensing": "Flexible commercial licensing"
+        },
+        "dueDiligenceQuestions": [
+            "What is your data curation methodology?",
+            "How do you separate enterprise customer data from model training?",
+            "Can you provide data lineage for my specific deployment?",
+            "What language-specific biases exist in multilingual models?",
+            "What are your data refresh and versioning practices?"
+        ],
+        "lastUpdated": "2024-12-01",
+        "documentationUrl": "https://cohere.com/"
+    },
+    {
+        "id": "huggingface",
+        "name": "Hugging Face (Hosted Models)",
+        "aliases": ["huggingface", "hugging face", "hf", "transformers"],
+        "logo": "🤗",
+        "category": "Model Repository/Inference",
+        "trainingData": {
+            "sources": "Varies by model - community uploaded",
+            "cutoffDate": "Model-dependent",
+            "geographicCoverage": "Model-dependent",
+            "knownDatasets": "Highly variable - check individual model cards"
+        },
+        "transparency": {
+            "level": "High",
+            "details": "Model cards required; community driven; variable quality",
+            "dataLineage": True,
+            "auditability": True
+        },
+        "knownBiases": [
+            "Biases vary dramatically by model",
+            "Community models may lack thorough bias testing",
+            "Documentation quality inconsistent",
+            "Older models may have outdated practices"
+        ],
+        "risks": [
+            {"severity": "high", "text": "Quality and safety vary dramatically by model"},
+            {"severity": "high", "text": "Some models lack proper documentation"},
+            {"severity": "medium", "text": "Community models may not be maintained"},
+            {"severity": "low", "text": "Transparency generally better than commercial options"}
+        ],
+        "compliance": {
+            "gdpr": "User responsible for compliance",
+            "euAiAct": "User responsible for compliance",
+            "licensing": "Varies by model - check individual licenses"
+        },
+        "dueDiligenceQuestions": [
+            "Does this specific model have a complete model card?",
+            "Who trained this model and what is their reputation?",
+            "What training data was used for this specific model?",
+            "Has this model been evaluated for bias?",
+            "Is this model actively maintained?",
+            "What is the license for this model?"
+        ],
+        "lastUpdated": "2024-12-01",
+        "documentationUrl": "https://huggingface.co/"
+    }
+]
+
+
+def find_matching_vendors(user_input):
+    """Match user input against vendor database and return matching vendors."""
+    if not user_input:
+        return []
+    
+    user_input_lower = user_input.lower()
+    matched_vendors = []
+    
+    for vendor in VENDOR_DATABASE:
+        # Check if any alias matches
+        for alias in vendor.get("aliases", []):
+            if alias.lower() in user_input_lower:
+                matched_vendors.append(vendor)
+                break
+        else:
+            # Also check the vendor name
+            if vendor["name"].lower() in user_input_lower:
+                matched_vendors.append(vendor)
+    
+    return matched_vendors
+
+
+def calculate_vendor_risk_score(vendors):
+    """Calculate a risk score based on matched vendors."""
+    if not vendors:
+        return None
+    
+    total_high = 0
+    total_medium = 0
+    total_low = 0
+    
+    for vendor in vendors:
+        for risk in vendor.get("risks", []):
+            if risk["severity"] == "high":
+                total_high += 1
+            elif risk["severity"] == "medium":
+                total_medium += 1
+            elif risk["severity"] == "low":
+                total_low += 1
+    
+    # Calculate risk score (lower is worse)
+    # High risks deduct 10 points, medium 5, low 2
+    base_score = 100
+    score = base_score - (total_high * 10) - (total_medium * 5) - (total_low * 2)
+    return max(0, min(100, score))
+
+
 # ---------- Compressed governance prompt ----------
 BASE_PROMPT = """
 You are an AI Governance Assistant specialized in IDEATION-STAGE evaluation.
@@ -181,6 +459,10 @@ def index():
         harm_pathways_str = ", ".join(harm_pathways) if harm_pathways else "None selected"
         risk_tolerance = request.form.get("risk_tolerance", "").strip()
 
+        # Find matching vendors from third_parties input
+        matched_vendors = find_matching_vendors(third_parties)
+        vendor_risk_score = calculate_vendor_risk_score(matched_vendors)
+
         # Build a single structured prompt for GPT
         user_input = f"""
 [SECTION 1: SYSTEM INTAKE]
@@ -249,11 +531,15 @@ Stated risk tolerance: {risk_tolerance}
             
             session['result'] = markdown.markdown(display_result.strip(), extensions=['tables', 'fenced_code'])
             session['scores'] = scores
+            session['vendors'] = matched_vendors
+            session['vendor_risk_score'] = vendor_risk_score
             session['error'] = None
         except Exception as e:
             session['error'] = f"An error occurred while calling the API: {str(e)}"
             session['result'] = None
             session['scores'] = None
+            session['vendors'] = matched_vendors
+            session['vendor_risk_score'] = vendor_risk_score
 
         return redirect(url_for('results'))
 
@@ -265,6 +551,8 @@ def results():
     result = session.pop('result', None)
     error = session.pop('error', None)
     scores = session.pop('scores', None)
+    vendors = session.pop('vendors', [])
+    vendor_risk_score = session.pop('vendor_risk_score', None)
     
     if result:
         result = Markup(result)
@@ -272,7 +560,8 @@ def results():
     if not result and not error:
         return redirect(url_for('index'))
     
-    return render_template("results.html", result=result, error=error, scores=scores)
+    return render_template("results.html", result=result, error=error, scores=scores, 
+                          vendors=vendors, vendor_risk_score=vendor_risk_score)
 
 
 if __name__ == "__main__":

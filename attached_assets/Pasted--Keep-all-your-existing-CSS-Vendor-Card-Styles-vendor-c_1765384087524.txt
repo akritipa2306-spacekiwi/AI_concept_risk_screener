@@ -1,0 +1,237 @@
+/* ... Keep all your existing CSS ... */
+
+/* Vendor Card Styles */
+.vendor-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #38bdf8;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.15);
+}
+
+.vendor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #bae6fd;
+}
+
+.vendor-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #0c4a6e;
+  font-weight: 600;
+}
+
+.transparency-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.transparency-low {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.transparency-lowmedium {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.transparency-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.transparency-high {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.vendor-section {
+  margin-bottom: 24px;
+}
+
+.vendor-section:last-of-type {
+  margin-bottom: 20px;
+}
+
+.vendor-section h4 {
+  font-size: 1rem;
+  color: #0c4a6e;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.vendor-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.vendor-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #bae6fd;
+}
+
+.vendor-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vendor-value {
+  font-size: 0.875rem;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+.vendor-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.vendor-list li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.vendor-list li:before {
+  content: "⚠️";
+  position: absolute;
+  left: 0;
+  font-size: 0.875rem;
+}
+
+.risk-flags {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.risk-flag {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.risk-flag.risk-high {
+  background: #fee2e2;
+  border-left: 4px solid #dc2626;
+}
+
+.risk-flag.risk-medium {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+}
+
+.risk-flag.risk-low {
+  background: #dbeafe;
+  border-left: 4px solid #3b82f6;
+}
+
+.risk-severity {
+  font-weight: 700;
+  font-size: 0.6875rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.risk-high .risk-severity {
+  background: #dc2626;
+  color: white;
+}
+
+.risk-medium .risk-severity {
+  background: #f59e0b;
+  color: white;
+}
+
+.risk-low .risk-severity {
+  background: #3b82f6;
+  color: white;
+}
+
+.risk-text {
+  flex: 1;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+.vendor-questions {
+  margin: 0;
+  padding-left: 24px;
+  list-style: decimal;
+}
+
+.vendor-questions li {
+  margin-bottom: 10px;
+  font-size: 0.875rem;
+  color: #1e293b;
+  line-height: 1.6;
+  padding-left: 6px;
+}
+
+.vendor-note {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #bae6fd;
+  font-size: 0.875rem;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.vendor-note strong {
+  color: #0c4a6e;
+}
+
+@media (max-width: 640px) {
+  .vendor-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .vendor-card {
+    padding: 20px;
+  }
+  
+  .risk-flag {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media print {
+  .vendor-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #bae6fd;
+  }
+}

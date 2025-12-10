@@ -97,6 +97,99 @@
       </div>
       {% endif %}
 
+      {% if vendors and vendors|length > 0 %}
+      <div class="vendors-section">
+        <h2>Third-Party Vendor Risk Profiles</h2>
+        <p class="vendors-intro">The following vendors were detected in your submission. Review their data provenance and risk profiles below.</p>
+        
+        {% for vendor in vendors %}
+        <div class="vendor-card">
+          <div class="vendor-header">
+            <h3><span class="vendor-logo">{{ vendor.logo }}</span> {{ vendor.name }}</h3>
+            <span class="transparency-badge transparency-{{ vendor.transparency.level|lower|replace('-', '')|replace(' ', '') }}">
+              {{ vendor.transparency.level }} Transparency
+            </span>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Training Data Profile</h4>
+            <div class="vendor-grid">
+              <div class="vendor-item">
+                <span class="vendor-label">Sources</span>
+                <span class="vendor-value">{{ vendor.trainingData.sources }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Knowledge Cutoff</span>
+                <span class="vendor-value">{{ vendor.trainingData.cutoffDate }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Geographic Coverage</span>
+                <span class="vendor-value">{{ vendor.trainingData.geographicCoverage }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Known Datasets</span>
+                <span class="vendor-value">{{ vendor.trainingData.knownDatasets }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Known Biases & Limitations</h4>
+            <ul class="vendor-list">
+              {% for bias in vendor.knownBiases %}
+              <li>{{ bias }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Risk Flags</h4>
+            <div class="risk-flags">
+              {% for risk in vendor.risks %}
+              <div class="risk-flag risk-{{ risk.severity }}">
+                <span class="risk-severity">{{ risk.severity|upper }}</span>
+                <span class="risk-text">{{ risk.text }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Compliance Notes</h4>
+            <div class="vendor-grid">
+              <div class="vendor-item">
+                <span class="vendor-label">GDPR</span>
+                <span class="vendor-value">{{ vendor.compliance.gdpr }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">EU AI Act</span>
+                <span class="vendor-value">{{ vendor.compliance.euAiAct }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Licensing</span>
+                <span class="vendor-value">{{ vendor.compliance.licensing }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Due Diligence Questions</h4>
+            <ol class="vendor-questions">
+              {% for question in vendor.dueDiligenceQuestions %}
+              <li>{{ question }}</li>
+              {% endfor %}
+            </ol>
+          </div>
+          
+          <div class="vendor-note">
+            <strong>Last Updated:</strong> {{ vendor.lastUpdated }} | 
+            <a href="{{ vendor.documentationUrl }}" target="_blank" rel="noopener noreferrer">View Documentation</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       <div class="result-content">{{ result }}</div>
       
       <div class="results-actions">
