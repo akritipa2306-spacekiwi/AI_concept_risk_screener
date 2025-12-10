@@ -326,7 +326,10 @@ Assess:
   - Note jurisdiction-specific compliance requirements
 - Data sources and provenance / licensing status
 - Personal / sensitive data involved
-- Third-party models, APIs, or vendors and their risks
+- Third-party models, APIs, or vendors and their risks:
+  - Review the detected vendor risk profiles provided (transparency level, high/medium risk counts)
+  - Factor vendor transparency and risk levels into the overall assessment
+  - Highlight any vendor-specific concerns that affect governance readiness
 - Deployment context (internal tool, customer-facing, embedded in product, etc.)
 - Level of autonomy (fully automated vs human-in-the-loop vs manual trigger)
 - Human annotator/moderator considerations:
@@ -462,6 +465,21 @@ def index():
         # Find matching vendors from third_parties input
         matched_vendors = find_matching_vendors(third_parties)
         vendor_risk_score = calculate_vendor_risk_score(matched_vendors)
+        
+        # Build vendor summary for GPT
+        vendor_summary = ""
+        if matched_vendors:
+            vendor_lines = []
+            for v in matched_vendors:
+                high_risks = sum(1 for r in v.get("risks", []) if r["severity"] == "high")
+                medium_risks = sum(1 for r in v.get("risks", []) if r["severity"] == "medium")
+                vendor_lines.append(
+                    f"- {v['name']} (Transparency: {v['transparency']['level']}, "
+                    f"High Risks: {high_risks}, Medium Risks: {medium_risks})"
+                )
+            vendor_summary = "\n".join(vendor_lines)
+        else:
+            vendor_summary = "No known vendors detected"
 
         # Build a single structured prompt for GPT
         user_input = f"""
@@ -487,6 +505,8 @@ Jurisdiction notes: {jurisdiction_notes}
 Data sources: {data_sources}
 Personal / sensitive data involved: {personal_data}
 Third-party models / APIs / vendors: {third_parties}
+Detected vendor risk profiles:
+{vendor_summary}
 Deployment context: {deployment_context}
 Level of autonomy: {level_of_autonomy}
 Deployment notes: {deployment_notes}
