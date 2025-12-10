@@ -46,6 +46,20 @@ Preferred communication style: Simple, everyday language.
 - The AI evaluates across 6 key mechanisms: intake, purpose assessment, legal foundations, stakeholder analysis, impact triage, and feasibility gating
 - *Rationale*: Leverages LLM reasoning capabilities to provide expert-level governance guidance without requiring human governance experts on staff
 
+**Vendor Risk Profiling**
+- Built-in database (VENDOR_DATABASE) with 5 major AI vendors: OpenAI GPT-4, Anthropic Claude, Google Gemini, Cohere, Hugging Face
+- Automatic vendor detection from user input in "Third-party models/APIs/vendors" field
+- Each vendor profile includes:
+  - Training data provenance (sources, cutoff dates, geographic coverage, known datasets)
+  - Transparency level (Low/Low-Medium/Medium/High)
+  - Known biases and limitations
+  - Risk flags (High/Medium/Low severity)
+  - Compliance notes (GDPR, EU AI Act, licensing)
+  - Due diligence questions to ask the vendor
+- Vendor risk score calculation based on aggregate risk flags
+- Results page displays detailed vendor cards with all provenance information
+- *Rationale*: Pre-populated vendor intelligence enables accurate risk assessment without requiring users to research each AI vendor
+
 **Session Management**
 - Flask session storage for multi-step form data persistence
 - Session secret key from environment variable with fallback
