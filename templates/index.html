@@ -36,14 +36,15 @@
         <h2>Step 1 · System Intake</h2>
         <p class="step-subtitle">Capture the basic shape of your AI system idea.</p>
 
+        <div class="validation-summary" id="validation-summary-1"></div>
         <div class="grid-2">
           <div class="field">
             <label for="system_name">System name</label>
-            <input id="system_name" name="system_name" placeholder="e.g., FairScreen Rentals" />
+            <input id="system_name" name="system_name" placeholder="e.g., FairScreen Rentals" required />
           </div>
           <div class="field">
             <label for="ai_type">AI type</label>
-            <select id="ai_type" name="ai_type">
+            <select id="ai_type" name="ai_type" required>
               <option value="">Select AI type</option>
               <option value="Natural Language Processing (NLP)">Natural Language Processing (NLP)</option>
               <option value="Computer Vision (CV)">Computer Vision (CV)</option>
@@ -61,11 +62,11 @@
           <div class="field">
             <label for="short_description">Short description</label>
             <textarea id="short_description" name="short_description"
-                      placeholder="One or two sentences describing what this AI will do."></textarea>
+                      placeholder="One or two sentences describing what this AI will do." required></textarea>
           </div>
           <div class="field">
             <label for="new_or_update">New or update?</label>
-            <select id="new_or_update" name="new_or_update">
+            <select id="new_or_update" name="new_or_update" required>
               <option value="">Select one</option>
               <option>New system</option>
               <option>Update to existing system</option>
@@ -75,7 +76,7 @@
 
         <div class="field">
           <label for="primary_intent">What is the primary intent of this AI system?</label>
-          <select id="primary_intent" name="primary_intent">
+          <select id="primary_intent" name="primary_intent" required>
             <option value="">Select primary intent</option>
             <option value="Automate decision-making">Automate decision-making</option>
             <option value="Provide recommendations">Provide recommendations</option>
@@ -128,16 +129,17 @@
         <h2>Step 2 · Purpose & Concept</h2>
         <p class="step-subtitle">Clarify the problem, value, and MVP.</p>
 
+        <div class="validation-summary" id="validation-summary-2"></div>
         <div class="grid-2">
           <div class="field">
             <label for="problem">What problem does this solve?</label>
             <textarea id="problem" name="problem"
-                      placeholder="Describe the core problem in plain language."></textarea>
+                      placeholder="Describe the core problem in plain language." required></textarea>
           </div>
           <div class="field">
             <label for="who_problem">Who experiences this problem today?</label>
             <textarea id="who_problem" name="who_problem"
-                      placeholder="Teams, roles, or customer segments."></textarea>
+                      placeholder="Teams, roles, or customer segments." required></textarea>
           </div>
         </div>
 
@@ -145,12 +147,12 @@
           <div class="field">
             <label for="value_created">What value does AI create?</label>
             <textarea id="value_created" name="value_created"
-                      placeholder="Time saved, risk reduced, revenue, etc."></textarea>
+                      placeholder="Time saved, risk reduced, revenue, etc." required></textarea>
           </div>
           <div class="field">
             <label for="non_ai_alt">Non-AI alternative today</label>
             <textarea id="non_ai_alt" name="non_ai_alt"
-                      placeholder="Manual processes, existing tools, etc."></textarea>
+                      placeholder="Manual processes, existing tools, etc." required></textarea>
           </div>
         </div>
 
@@ -158,12 +160,12 @@
           <div class="field">
             <label for="success_metrics">How will success be measured?</label>
             <textarea id="success_metrics" name="success_metrics"
-                      placeholder="e.g., 50% less review time, fewer errors."></textarea>
+                      placeholder="e.g., 50% less review time, fewer errors." required></textarea>
           </div>
           <div class="field">
             <label for="mvp_description">MVP – what ships first?</label>
             <textarea id="mvp_description" name="mvp_description"
-                      placeholder="Smallest version that still delivers value."></textarea>
+                      placeholder="Smallest version that still delivers value." required></textarea>
           </div>
         </div>
 
@@ -178,6 +180,7 @@
         <h2>Step 3 · Legal & Data Foundations</h2>
         <p class="step-subtitle">Surface data, provenance, and third-party risks early.</p>
 
+        <div class="validation-summary" id="validation-summary-3"></div>
         <div class="field-group">
           <label class="group-label">Region of Use / Jurisdiction</label>
           <p class="field-hint">Select all regions where this AI system will be deployed or where users/data subjects are located.</p>
@@ -226,19 +229,19 @@
           <div class="field">
             <label for="data_sources">Data sources</label>
             <textarea id="data_sources" name="data_sources"
-                      placeholder="Internal databases, logs, public data, etc."></textarea>
+                      placeholder="Internal databases, logs, public data, etc." required></textarea>
           </div>
           <div class="field">
             <label for="personal_data">Personal / sensitive data involved?</label>
             <textarea id="personal_data" name="personal_data"
-                      placeholder="Health data, financial data, biometrics, etc."></textarea>
+                      placeholder="Health data, financial data, biometrics, etc." required></textarea>
           </div>
         </div>
 
         <div class="field">
           <label for="third_parties">Third-party models / APIs / vendors</label>
           <textarea id="third_parties" name="third_parties"
-                    placeholder="LLM providers, SaaS tools, labeling vendors."></textarea>
+                    placeholder="LLM providers, SaaS tools, labeling vendors." required></textarea>
         </div>
 
         <div class="field-group">
@@ -246,7 +249,7 @@
           <div class="grid-2">
             <div class="field">
               <label for="deployment_context">Deployment Context</label>
-              <select id="deployment_context" name="deployment_context">
+              <select id="deployment_context" name="deployment_context" required>
                 <option value="">Select one</option>
                 <option>Internal tool</option>
                 <option>Customer-facing app</option>
@@ -258,7 +261,7 @@
             </div>
             <div class="field">
               <label for="level_of_autonomy">Level of Autonomy</label>
-              <select id="level_of_autonomy" name="level_of_autonomy">
+              <select id="level_of_autonomy" name="level_of_autonomy" required>
                 <option value="">Select one</option>
                 <option>Fully automated</option>
                 <option>Human-in-the-loop</option>
@@ -277,7 +280,7 @@
         <div class="field">
           <label for="provenance">Data provenance / licensing</label>
           <textarea id="provenance" name="provenance"
-                    placeholder="Where data comes from, any licensing or ToS dependencies."></textarea>
+                    placeholder="Where data comes from, any licensing or ToS dependencies." required></textarea>
         </div>
 
         <div class="field conditional-section">
@@ -368,16 +371,18 @@
         <h2>Step 4 · Stakeholders & Impact</h2>
         <p class="step-subtitle">Map who is affected and how much risk you’re willing to carry.</p>
 
+        <div class="validation-summary" id="validation-summary-4"></div>
+
         <div class="grid-2">
           <div class="field">
             <label for="primary_users">Primary users</label>
             <textarea id="primary_users" name="primary_users"
-                      placeholder="Teams or customer segments who will directly use this AI."></textarea>
+                      placeholder="Teams or customer segments who will directly use this AI." required></textarea>
           </div>
           <div class="field">
             <label for="affected_groups">Affected groups (including vulnerable)</label>
             <textarea id="affected_groups" name="affected_groups"
-                      placeholder="Non-users, downstream groups, or vulnerable populations."></textarea>
+                      placeholder="Non-users, downstream groups, or vulnerable populations." required></textarea>
           </div>
         </div>
 
@@ -421,7 +426,7 @@
 
         <div class="field">
           <label for="risk_tolerance">Risk tolerance</label>
-          <select id="risk_tolerance" name="risk_tolerance">
+          <select id="risk_tolerance" name="risk_tolerance" required>
             <option value="">Select one</option>
             <option>Low – very cautious</option>
             <option>Medium – some risk acceptable</option>
@@ -454,13 +459,77 @@ function showStep(step) {
   });
 }
 
+// Validation function for a step
+function validateStep(stepNum) {
+  const stepSection = document.querySelector(`.wizard-step[data-step="${stepNum}"]`);
+  const requiredFields = stepSection.querySelectorAll('[required]');
+  const summaryDiv = document.getElementById(`validation-summary-${stepNum}`);
+  let isValid = true;
+  let emptyCount = 0;
+  
+  // Clear previous validation states
+  requiredFields.forEach(field => {
+    field.classList.remove('invalid');
+  });
+  
+  // Check each required field
+  requiredFields.forEach(field => {
+    const value = field.value.trim();
+    if (!value) {
+      field.classList.add('invalid');
+      isValid = false;
+      emptyCount++;
+      
+      // Remove invalid class when user starts typing
+      field.addEventListener('input', function handler() {
+        if (this.value.trim()) {
+          this.classList.remove('invalid');
+        }
+        this.removeEventListener('input', handler);
+      });
+    }
+  });
+  
+  // Show or hide validation summary
+  if (summaryDiv) {
+    if (!isValid) {
+      summaryDiv.textContent = `Please fill in ${emptyCount} required field${emptyCount > 1 ? 's' : ''} highlighted below.`;
+      summaryDiv.classList.add('visible');
+      // Scroll to first invalid field
+      const firstInvalid = stepSection.querySelector('.invalid');
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstInvalid.focus();
+      }
+    } else {
+      summaryDiv.classList.remove('visible');
+    }
+  }
+  
+  return isValid;
+}
+
+// Navigation with validation
+function nextStep(fromStep, toStep) {
+  if (validateStep(fromStep)) {
+    showStep(toStep);
+  }
+}
+
 // Navigation buttons
-document.getElementById("next1").onclick = () => showStep(2);
-document.getElementById("next2").onclick = () => showStep(3);
-document.getElementById("next3").onclick = () => showStep(4);
+document.getElementById("next1").onclick = () => nextStep(1, 2);
+document.getElementById("next2").onclick = () => nextStep(2, 3);
+document.getElementById("next3").onclick = () => nextStep(3, 4);
 document.getElementById("back2").onclick = () => showStep(1);
 document.getElementById("back3").onclick = () => showStep(2);
 document.getElementById("back4").onclick = () => showStep(3);
+
+// Validate step 4 before form submission
+document.getElementById("wizardForm").addEventListener("submit", function(e) {
+  if (!validateStep(4)) {
+    e.preventDefault();
+  }
+});
 
 // Optional: sessionStorage to survive refreshes
 const fields = document.querySelectorAll("input, textarea, select");
