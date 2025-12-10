@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
+from flask_session import Session
 from markupsafe import Markup
 from openai import OpenAI
 import markdown
@@ -8,6 +9,12 @@ import os
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
+
+# Use server-side session storage to avoid cookie size limits
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_FILE_DIR'] = '/tmp/flask_session'
+app.config['SESSION_PERMANENT'] = False
+Session(app)
 
 # ---------- Vendor Database ----------
 VENDOR_DATABASE = [
