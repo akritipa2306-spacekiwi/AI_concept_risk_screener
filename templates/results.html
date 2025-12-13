@@ -10,68 +10,74 @@
   .score-card {
     background: white;
     border-radius: 16px;
-    padding: 32px;
+    padding: 24px;
     box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
     margin-bottom: 28px;
     text-align: center;
+    overflow: hidden;
   }
   .score-dashboard {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
   }
   .score-number-large {
-    font-size: 96px;
+    font-size: 72px;
     font-weight: 800;
     line-height: 1;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
   .score-number-large.score-green { color: #10b981; }
   .score-number-large.score-yellow { color: #f59e0b; }
   .score-number-large.score-red { color: #ef4444; }
   .score-subtitle {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
   }
   .score-divider {
     width: 100%;
     height: 1px;
     background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-    margin: 24px 0;
+    margin: 16px 0;
   }
   .score-details {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
     text-align: left;
   }
   .score-item {
     background: #f8fafc;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 10px;
+    padding: 12px;
+    min-width: 0;
+    overflow: hidden;
   }
   .score-item-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .score-bar-container {
-    height: 8px;
+    height: 6px;
     background: #e2e8f0;
-    border-radius: 4px;
+    border-radius: 3px;
     overflow: hidden;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .score-bar {
     height: 100%;
-    border-radius: 4px;
+    border-radius: 3px;
     transition: width 0.5s ease;
   }
   .bar-green { background: linear-gradient(90deg, #10b981, #34d399); }
@@ -79,10 +85,11 @@
   .bar-red { background: linear-gradient(90deg, #ef4444, #f87171); }
   .score-badge {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
     font-weight: 600;
+    white-space: nowrap;
   }
   .badge-green { background: #d1fae5; color: #065f46; }
   .badge-yellow { background: #fef3c7; color: #92400e; }
@@ -91,6 +98,15 @@
   .badge-moderate { background: #fef3c7; color: #92400e; }
   .badge-weak { background: #fee2e2; color: #991b1b; }
   .badge-strong { background: #d1fae5; color: #065f46; }
+  
+  @media (max-width: 600px) {
+    .score-details {
+      grid-template-columns: 1fr 1fr;
+    }
+    .score-number-large {
+      font-size: 56px;
+    }
+  }
 </style>
 <div class="page">
   <header class="top-bar">
