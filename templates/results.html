@@ -6,6 +6,92 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<style>
+  .score-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .score-dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .score-number-large {
+    font-size: 96px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .score-number-large.score-green { color: #10b981; }
+  .score-number-large.score-yellow { color: #f59e0b; }
+  .score-number-large.score-red { color: #ef4444; }
+  .score-subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .score-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+    margin: 24px 0;
+  }
+  .score-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    text-align: left;
+  }
+  .score-item {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .score-item-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .score-bar-container {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .score-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .bar-green { background: linear-gradient(90deg, #10b981, #34d399); }
+  .bar-yellow { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .bar-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .score-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-yellow { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-excellent { background: #d1fae5; color: #065f46; }
+  .badge-moderate { background: #fef3c7; color: #92400e; }
+  .badge-weak { background: #fee2e2; color: #991b1b; }
+  .badge-strong { background: #d1fae5; color: #065f46; }
+</style>
 <div class="page">
   <header class="top-bar">
     <div class="logo-pill">AI</div>
@@ -31,16 +117,17 @@
     {% if result %}
       {% if scores and scores.overall_score is defined %}
       <div class="score-card">
-        <div class="score-main">
-          <div class="score-number {% if scores.overall_score >= 70 %}score-green{% elif scores.overall_score >= 40 %}score-yellow{% else %}score-red{% endif %}">
+        <div class="score-dashboard">
+          <div class="score-number-large {% if scores.overall_score >= 70 %}score-green{% elif scores.overall_score >= 40 %}score-yellow{% else %}score-red{% endif %}">
             {{ scores.overall_score }}
           </div>
-          <div class="score-label">Governance Readiness Score</div>
+          <div class="score-subtitle">NIST-Weighted Governance Score</div>
         </div>
+        <div class="score-divider"></div>
         <div class="score-details">
           {% if scores.external_impact is defined %}
           <div class="score-item">
-            <div class="score-item-label">External Impact</div>
+            <div class="score-item-label">External Impact Risk</div>
             <div class="score-bar-container">
               <div class="score-bar {% if scores.external_impact == 'Low' %}bar-green{% elif scores.external_impact == 'Medium' %}bar-yellow{% else %}bar-red{% endif %}" 
                    style="width: {% if scores.external_impact == 'Low' %}30{% elif scores.external_impact == 'Medium' %}60{% else %}90{% endif %}%"></div>
@@ -71,6 +158,30 @@
             </div>
             <span class="score-badge {% if scores.regulatory_sensitivity == 'Low' %}badge-green{% elif scores.regulatory_sensitivity == 'Medium' %}badge-yellow{% else %}badge-red{% endif %}">
               {{ scores.regulatory_sensitivity }}
+            </span>
+          </div>
+          {% endif %}
+          {% if scores.data_legal_soundness is defined %}
+          <div class="score-item">
+            <div class="score-item-label">Data & Legal Soundness</div>
+            <div class="score-bar-container">
+              <div class="score-bar {% if scores.data_legal_soundness == 'Excellent' %}bar-green{% elif scores.data_legal_soundness == 'Moderate' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.data_legal_soundness == 'Excellent' %}30{% elif scores.data_legal_soundness == 'Moderate' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge {% if scores.data_legal_soundness == 'Excellent' %}badge-excellent{% elif scores.data_legal_soundness == 'Moderate' %}badge-moderate{% else %}badge-weak{% endif %}">
+              {{ scores.data_legal_soundness }}
+            </span>
+          </div>
+          {% endif %}
+          {% if scores.purpose_clarity is defined %}
+          <div class="score-item">
+            <div class="score-item-label">Purpose & MVP Clarity</div>
+            <div class="score-bar-container">
+              <div class="score-bar {% if scores.purpose_clarity == 'Strong' %}bar-green{% elif scores.purpose_clarity == 'Moderate' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.purpose_clarity == 'Strong' %}30{% elif scores.purpose_clarity == 'Moderate' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge {% if scores.purpose_clarity == 'Strong' %}badge-strong{% elif scores.purpose_clarity == 'Moderate' %}badge-moderate{% else %}badge-weak{% endif %}">
+              {{ scores.purpose_clarity }}
             </span>
           </div>
           {% endif %}
