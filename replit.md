@@ -60,6 +60,19 @@ Preferred communication style: Simple, everyday language.
 - Results page displays detailed vendor cards with all provenance information
 - *Rationale*: Pre-populated vendor intelligence enables accurate risk assessment without requiring users to research each AI vendor
 
+**Deterministic Python Scoring Engine**
+- Prevents AI math hallucinations by separating classification from calculation
+- AI acts as "Risk Classifier" outputting only tier classifications (Low/Medium/High, etc.)
+- GOVERNANCE_WEIGHTS dictionary defines point values for each tier:
+  - external_impact: Low=30, Medium=15, High=5
+  - internal_failure: Low=20, Medium=10, High=5
+  - regulatory_sensitivity: Low=20, Medium=10, High=5
+  - data_legal_soundness: Excellent=20, Moderate=10, Weak=5
+  - purpose_clarity: Strong=10, Moderate=5, Weak=2
+- calculate_governance_score() function performs deterministic lookup and summation
+- Maximum possible score: 100 (all favorable tiers)
+- *Rationale*: Python-based scoring ensures consistent, auditable results without relying on LLM arithmetic
+
 **Session Management**
 - Flask session storage for multi-step form data persistence
 - Session secret key from environment variable with fallback

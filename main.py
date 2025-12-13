@@ -294,6 +294,42 @@ def calculate_vendor_risk_score(vendors):
     return max(0, min(100, score))
 
 
+# ---------- Deterministic Governance Scoring Engine ----------
+GOVERNANCE_WEIGHTS = {
+    "external_impact": {"Low": 30, "Medium": 15, "High": 5},
+    "internal_failure": {"Low": 20, "Medium": 10, "High": 5},
+    "regulatory_sensitivity": {"Low": 20, "Medium": 10, "High": 5},
+    "data_legal_soundness": {"Excellent": 20, "Moderate": 10, "Weak": 5},
+    "purpose_clarity": {"Strong": 10, "Moderate": 5, "Weak": 2}
+}
+
+
+def calculate_governance_score(tiers_json):
+    """
+    Calculate governance score deterministically from AI-classified tiers.
+    Prevents AI math hallucinations by doing the calculation in Python.
+    
+    Args:
+        tiers_json: Dictionary with tier classifications from AI
+        
+    Returns:
+        Integer score from 0-100
+    """
+    if not tiers_json or not isinstance(tiers_json, dict):
+        return None
+    
+    total_score = 0
+    
+    for category, tier_map in GOVERNANCE_WEIGHTS.items():
+        tier_value = tiers_json.get(category, "")
+        # Look up the weight for this tier, default to 0 if not found
+        points = tier_map.get(tier_value, 0)
+        total_score += points
+    
+    # Clamp score between 0 and 100
+    return max(0, min(100, total_score))
+
+
 # ---------- Compressed governance prompt ----------
 BASE_PROMPT = """
 You are an AI Governance Assistant specialized in IDEATION-STAGE evaluation.
@@ -373,17 +409,13 @@ Give:
 
 ---
 
-INTERNAL SCORING METHODOLOGY (use these rules to calculate, do not display in output):
-- External Harm Risk (0-30 pts): Low=30, Medium=15, High=5
-- Internal Failure Risk (0-20 pts): Low=20, Medium=10, High=5
-- Regulatory Sensitivity (0-20 pts): Low=20, Medium=10, High=5
-- Data & Legal Soundness (0-20 pts): Excellent=20, Moderate=10, Weak=5
-- Purpose & MVP Clarity (0-10 pts): Strong=10, Moderate=5, Weak=2
+RISK CLASSIFICATION OUTPUT:
+You are a Risk Classifier. At the end of your response, you MUST output ONLY the tier classifications in this EXACT JSON format.
+DO NOT calculate any scores - just classify each dimension into its appropriate tier.
+The score will be calculated separately by the system.
 
-Return the scores in this EXACT format at the end of your response (this JSON block will be hidden from display):
 ```json
 {
-  "overall_score": <number 0-100>,
   "external_impact": "<Low/Medium/High>",
   "internal_failure": "<Low/Medium/High>",
   "regulatory_sensitivity": "<Low/Medium/High>",
@@ -391,6 +423,13 @@ Return the scores in this EXACT format at the end of your response (this JSON bl
   "purpose_clarity": "<Strong/Moderate/Weak>"
 }
 ```
+
+Classification Guidelines:
+- external_impact: Risk of harm to users/public (Low=minimal, Medium=moderate potential, High=significant potential)
+- internal_failure: Risk of system malfunction impact (Low=recoverable, Medium=costly, High=severe)
+- regulatory_sensitivity: Regulatory exposure level (Low=minimal oversight, Medium=some requirements, High=strict compliance needed)
+- data_legal_soundness: Quality of data governance (Excellent=fully compliant, Moderate=some gaps, Weak=significant issues)
+- purpose_clarity: Clarity of MVP and goals (Strong=well-defined, Moderate=needs refinement, Weak=unclear)
 """
 
 # ---------- OpenAI client ----------
@@ -544,14 +583,28 @@ Stated risk tolerance: {risk_tolerance}
             )
             raw_result = response.choices[0].message.content or ""
             
-            # Extract JSON scores from the response
-            scores = None
+            # Extract JSON tier classifications from the response
+            tiers = None
             json_match = re.search(r'```json\s*(\{[^`]+\})\s*```', raw_result, re.DOTALL)
             if json_match:
                 try:
-                    scores = json.loads(json_match.group(1))
+                    tiers = json.loads(json_match.group(1))
                 except json.JSONDecodeError:
-                    scores = None
+                    tiers = None
+            
+            # Calculate governance score deterministically using Python
+            # This prevents AI math hallucinations
+            scores = None
+            if tiers:
+                overall_score = calculate_governance_score(tiers)
+                scores = {
+                    "overall_score": overall_score,
+                    "external_impact": tiers.get("external_impact", ""),
+                    "internal_failure": tiers.get("internal_failure", ""),
+                    "regulatory_sensitivity": tiers.get("regulatory_sensitivity", ""),
+                    "data_legal_soundness": tiers.get("data_legal_soundness", ""),
+                    "purpose_clarity": tiers.get("purpose_clarity", "")
+                }
             
             # Remove the JSON block from the markdown display
             display_result = re.sub(r'```json\s*\{[^`]+\}\s*```', '', raw_result, flags=re.DOTALL)
