@@ -8,76 +8,92 @@
 <body>
 <style>
   .score-card {
-    background: white;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%) !important;
     border-radius: 16px;
-    padding: 24px;
+    padding: 32px 24px !important;
     box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
     margin-bottom: 28px;
     text-align: center;
-    overflow: hidden;
+    overflow: visible !important;
+    border: 1px solid #a7f3d0;
   }
   .score-dashboard {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
   .score-number-large {
-    font-size: 72px;
+    font-size: 80px;
     font-weight: 800;
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
   .score-number-large.score-green { color: #10b981; }
   .score-number-large.score-yellow { color: #f59e0b; }
   .score-number-large.score-red { color: #ef4444; }
   .score-subtitle {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: #64748b;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
   }
   .score-divider {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-    margin: 16px 0;
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+    margin: 20px 0;
   }
   .score-details {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-    text-align: left;
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 16px !important;
+    text-align: center;
+    width: 100%;
+    flex-direction: unset !important;
   }
   .score-item {
-    background: #f8fafc;
-    border-radius: 10px;
-    padding: 12px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    background: white;
+    border-radius: 12px;
+    padding: 16px 12px !important;
     min-width: 0;
-    overflow: hidden;
+    overflow: visible !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
   }
   .score-item-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: #64748b;
+    font-size: 10px;
+    font-weight: 700;
+    color: #475569;
     text-transform: uppercase;
     letter-spacing: 0.3px;
-    margin-bottom: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: 10px;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    text-align: center;
+    line-height: 1.4;
+    min-width: unset !important;
   }
   .score-bar-container {
-    height: 6px;
+    width: 100%;
+    height: 8px;
     background: #e2e8f0;
-    border-radius: 3px;
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+    flex: unset !important;
   }
   .score-bar {
     height: 100%;
-    border-radius: 3px;
+    border-radius: 4px;
     transition: width 0.5s ease;
   }
   .bar-green { background: linear-gradient(90deg, #10b981, #34d399); }
@@ -85,11 +101,12 @@
   .bar-red { background: linear-gradient(90deg, #ef4444, #f87171); }
   .score-badge {
     display: inline-block;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
     white-space: nowrap;
+    min-width: unset !important;
   }
   .badge-green { background: #d1fae5; color: #065f46; }
   .badge-yellow { background: #fef3c7; color: #92400e; }
@@ -99,12 +116,22 @@
   .badge-weak { background: #fee2e2; color: #991b1b; }
   .badge-strong { background: #d1fae5; color: #065f46; }
   
+  @media (max-width: 900px) {
+    .score-details {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+  }
   @media (max-width: 600px) {
     .score-details {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr) !important;
     }
     .score-number-large {
-      font-size: 56px;
+      font-size: 60px;
+    }
+  }
+  @media (max-width: 400px) {
+    .score-details {
+      grid-template-columns: 1fr !important;
     }
   }
 </style>
