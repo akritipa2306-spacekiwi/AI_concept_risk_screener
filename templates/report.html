@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ system_name }} - Governance Report</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    @media print {
+      body {
+        background: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .page {
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      .top-bar {
+        background: linear-gradient(135deg, #06b6d4 0%, #5eead4 100%) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .card {
+        box-shadow: none;
+        border: none;
+        padding: 20px;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .score-card-print {
+        background: #f0fdfa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .vendor-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .range-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+    
+    .report-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #5eead4;
+    }
+    .report-header h1 {
+      font-size: 28px;
+      color: #0891b2;
+      margin-bottom: 8px;
+    }
+    .report-header .system-name {
+      font-size: 20px;
+      color: #134e4a;
+      margin-bottom: 8px;
+    }
+    .report-header .report-date {
+      font-size: 14px;
+      color: #64748b;
+    }
+    
+    .print-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+    
+    .score-card-print {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%) !important;
+      border-radius: 16px;
+      padding: 32px 24px !important;
+      box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
+      margin-bottom: 28px;
+      text-align: center;
+      overflow: visible !important;
+      border: 1px solid #a7f3d0;
+    }
+    .score-dashboard-print {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .score-number-large {
+      font-size: 72px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .score-number-large.score-green { color: #10b981; }
+    .score-number-large.score-yellow { color: #f59e0b; }
+    .score-number-large.score-red { color: #ef4444; }
+    .score-subtitle-print {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .score-divider-print {
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+      margin: 20px 0;
+    }
+    .score-details-print {
+      display: grid !important;
+      grid-template-columns: repeat(5, 1fr) !important;
+      gap: 16px !important;
+      text-align: center;
+      width: 100%;
+    }
+    .score-item-print {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      background: white;
+      border-radius: 12px;
+      padding: 16px 12px !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+    .score-item-label-print {
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 10px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .score-bar-container-print {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .score-bar-print {
+      height: 100%;
+      border-radius: 4px;
+    }
+    .bar-green { background: linear-gradient(90deg, #10b981, #34d399); }
+    .bar-yellow { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .bar-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+    .score-badge-print {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-excellent { background: #d1fae5; color: #065f46; }
+    .badge-moderate { background: #fef3c7; color: #92400e; }
+    .badge-weak { background: #fee2e2; color: #991b1b; }
+    .badge-strong { background: #d1fae5; color: #065f46; }
+    
+    @media (max-width: 900px) {
+      .score-details-print {
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .score-details-print {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .score-number-large {
+        font-size: 56px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="top-bar no-print">
+    <div class="logo-pill">AI</div>
+    <div class="top-text">
+      <div class="top-title">Governance Ideation</div>
+      <div class="top-subtitle">Full Governance Report</div>
+    </div>
+  </header>
+
+  <main class="card">
+    <div class="report-header">
+      <h1>AI Governance Evaluation Report</h1>
+      <div class="system-name">{{ system_name }}</div>
+      <div class="report-date">Generated on {{ now }}</div>
+    </div>
+
+    <div class="print-actions no-print">
+      <button onclick="window.print()" class="btn-primary">Download as PDF</button>
+      <a href="/results" class="btn-secondary">Back to Results</a>
+    </div>
+
+    {% if error %}
+      <div class="result error">{{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+      {% if scores and scores.overall_score is defined %}
+      <div class="score-card-print">
+        <div class="score-dashboard-print">
+          <div class="score-number-large {% if scores.overall_score >= 70 %}score-green{% elif scores.overall_score >= 40 %}score-yellow{% else %}score-red{% endif %}">
+            {{ scores.overall_score }}
+          </div>
+          <div class="score-subtitle-print">NIST-Weighted Governance Score</div>
+        </div>
+        <div class="score-divider-print"></div>
+        <div class="score-details-print">
+          {% if scores.external_impact is defined %}
+          <div class="score-item-print">
+            <div class="score-item-label-print">External Impact Risk</div>
+            <div class="score-bar-container-print">
+              <div class="score-bar-print {% if scores.external_impact == 'Low' %}bar-green{% elif scores.external_impact == 'Medium' %}bar-yellow{% else %}bar-red{% endif %}" 
+                   style="width: {% if scores.external_impact == 'Low' %}30{% elif scores.external_impact == 'Medium' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge-print {% if scores.external_impact == 'Low' %}badge-green{% elif scores.external_impact == 'Medium' %}badge-yellow{% else %}badge-red{% endif %}">
+              {{ scores.external_impact }}
+            </span>
+          </div>
+          {% endif %}
+          {% if scores.internal_failure is defined %}
+          <div class="score-item-print">
+            <div class="score-item-label-print">Internal Failure Risk</div>
+            <div class="score-bar-container-print">
+              <div class="score-bar-print {% if scores.internal_failure == 'Low' %}bar-green{% elif scores.internal_failure == 'Medium' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.internal_failure == 'Low' %}30{% elif scores.internal_failure == 'Medium' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge-print {% if scores.internal_failure == 'Low' %}badge-green{% elif scores.internal_failure == 'Medium' %}badge-yellow{% else %}badge-red{% endif %}">
+              {{ scores.internal_failure }}
+            </span>
+          </div>
+          {% endif %}
+          {% if scores.regulatory_sensitivity is defined %}
+          <div class="score-item-print">
+            <div class="score-item-label-print">Regulatory Sensitivity</div>
+            <div class="score-bar-container-print">
+              <div class="score-bar-print {% if scores.regulatory_sensitivity == 'Low' %}bar-green{% elif scores.regulatory_sensitivity == 'Medium' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.regulatory_sensitivity == 'Low' %}30{% elif scores.regulatory_sensitivity == 'Medium' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge-print {% if scores.regulatory_sensitivity == 'Low' %}badge-green{% elif scores.regulatory_sensitivity == 'Medium' %}badge-yellow{% else %}badge-red{% endif %}">
+              {{ scores.regulatory_sensitivity }}
+            </span>
+          </div>
+          {% endif %}
+          {% if scores.data_legal_soundness is defined %}
+          <div class="score-item-print">
+            <div class="score-item-label-print">Data & Legal Soundness</div>
+            <div class="score-bar-container-print">
+              <div class="score-bar-print {% if scores.data_legal_soundness == 'Excellent' %}bar-green{% elif scores.data_legal_soundness == 'Moderate' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.data_legal_soundness == 'Excellent' %}30{% elif scores.data_legal_soundness == 'Moderate' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge-print {% if scores.data_legal_soundness == 'Excellent' %}badge-excellent{% elif scores.data_legal_soundness == 'Moderate' %}badge-moderate{% else %}badge-weak{% endif %}">
+              {{ scores.data_legal_soundness }}
+            </span>
+          </div>
+          {% endif %}
+          {% if scores.purpose_clarity is defined %}
+          <div class="score-item-print">
+            <div class="score-item-label-print">Purpose & MVP Clarity</div>
+            <div class="score-bar-container-print">
+              <div class="score-bar-print {% if scores.purpose_clarity == 'Strong' %}bar-green{% elif scores.purpose_clarity == 'Moderate' %}bar-yellow{% else %}bar-red{% endif %}"
+                   style="width: {% if scores.purpose_clarity == 'Strong' %}30{% elif scores.purpose_clarity == 'Moderate' %}60{% else %}90{% endif %}%"></div>
+            </div>
+            <span class="score-badge-print {% if scores.purpose_clarity == 'Strong' %}badge-strong{% elif scores.purpose_clarity == 'Moderate' %}badge-moderate{% else %}badge-weak{% endif %}">
+              {{ scores.purpose_clarity }}
+            </span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="score-ranges">
+        <h3>Understanding Your Score</h3>
+        <div class="range-item range-green">
+          <span class="range-label">70-100</span>
+          <span class="range-title">High Readiness</span>
+          <p>Strong governance foundations. Low external harm risk, manageable internal failure risk, and clear regulatory pathway. Proceed with standard development practices and periodic governance check-ins.</p>
+        </div>
+        <div class="range-item range-yellow">
+          <span class="range-label">40-69</span>
+          <span class="range-title">Moderate Readiness</span>
+          <p>Shows promise but has governance gaps that need attention. Address the conditions listed, strengthen weak areas, and consider additional safeguards. Proceed with caution and enhanced oversight.</p>
+        </div>
+        <div class="range-item range-red">
+          <span class="range-label">0-39</span>
+          <span class="range-title">Low Readiness</span>
+          <p>Significant governance concerns exist. High risk of external harm, regulatory complications, or fundamental gaps in data/legal foundations. Substantial remediation required before proceeding.</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if vendors and vendors|length > 0 %}
+      <div class="vendors-section">
+        <h2>Third-Party Vendor Risk Profiles</h2>
+        <p class="vendors-intro">The following vendors were detected in your submission. Review their data provenance and risk profiles below.</p>
+        
+        {% for vendor in vendors %}
+        <div class="vendor-card">
+          <div class="vendor-header">
+            <h3><span class="vendor-logo">{{ vendor.logo }}</span> {{ vendor.name }}</h3>
+            <span class="transparency-badge transparency-{{ vendor.transparency.level|lower|replace('-', '')|replace(' ', '') }}">
+              {{ vendor.transparency.level }} Transparency
+            </span>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Training Data Profile</h4>
+            <div class="vendor-grid">
+              <div class="vendor-item">
+                <span class="vendor-label">Sources</span>
+                <span class="vendor-value">{{ vendor.trainingData.sources }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Knowledge Cutoff</span>
+                <span class="vendor-value">{{ vendor.trainingData.cutoffDate }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Geographic Coverage</span>
+                <span class="vendor-value">{{ vendor.trainingData.geographicCoverage }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Known Datasets</span>
+                <span class="vendor-value">{{ vendor.trainingData.knownDatasets }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Known Biases & Limitations</h4>
+            <ul class="vendor-list">
+              {% for bias in vendor.knownBiases %}
+              <li>{{ bias }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Risk Flags</h4>
+            <div class="risk-flags">
+              {% for risk in vendor.risks %}
+              <div class="risk-flag risk-{{ risk.severity }}">
+                <span class="risk-severity">{{ risk.severity|upper }}</span>
+                <span class="risk-text">{{ risk.text }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Compliance Notes</h4>
+            <div class="vendor-grid">
+              <div class="vendor-item">
+                <span class="vendor-label">GDPR</span>
+                <span class="vendor-value">{{ vendor.compliance.gdpr }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">EU AI Act</span>
+                <span class="vendor-value">{{ vendor.compliance.euAiAct }}</span>
+              </div>
+              <div class="vendor-item">
+                <span class="vendor-label">Licensing</span>
+                <span class="vendor-value">{{ vendor.compliance.licensing }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="vendor-section">
+            <h4>Due Diligence Questions</h4>
+            <ol class="vendor-questions">
+              {% for question in vendor.dueDiligenceQuestions %}
+              <li>{{ question }}</li>
+              {% endfor %}
+            </ol>
+          </div>
+          
+          <div class="vendor-note">
+            <strong>Last Updated:</strong> {{ vendor.lastUpdated }} | 
+            <a href="{{ vendor.documentationUrl }}" target="_blank" rel="noopener noreferrer">View Documentation</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="result-content">{{ result }}</div>
+    {% endif %}
+  </main>
+</div>
+</body>
+</html>

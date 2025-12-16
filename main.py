@@ -613,6 +613,7 @@ Stated risk tolerance: {risk_tolerance}
             session['scores'] = scores
             session['vendors'] = matched_vendors
             session['vendor_risk_score'] = vendor_risk_score
+            session['system_name'] = system_name
             session['error'] = None
         except Exception as e:
             session['error'] = f"An error occurred while calling the API: {str(e)}"
@@ -628,11 +629,12 @@ Stated risk tolerance: {risk_tolerance}
 
 @app.route("/results")
 def results():
-    result = session.pop('result', None)
-    error = session.pop('error', None)
-    scores = session.pop('scores', None)
-    vendors = session.pop('vendors', [])
-    vendor_risk_score = session.pop('vendor_risk_score', None)
+    result = session.get('result', None)
+    error = session.get('error', None)
+    scores = session.get('scores', None)
+    vendors = session.get('vendors', [])
+    vendor_risk_score = session.get('vendor_risk_score', None)
+    system_name = session.get('system_name', 'AI System')
     
     if result:
         result = Markup(result)
@@ -641,7 +643,30 @@ def results():
         return redirect(url_for('index'))
     
     return render_template("results.html", result=result, error=error, scores=scores, 
-                          vendors=vendors, vendor_risk_score=vendor_risk_score)
+                          vendors=vendors, vendor_risk_score=vendor_risk_score,
+                          system_name=system_name)
+
+
+@app.route("/report")
+def report():
+    from datetime import datetime
+    result = session.get('result', None)
+    error = session.get('error', None)
+    scores = session.get('scores', None)
+    vendors = session.get('vendors', [])
+    vendor_risk_score = session.get('vendor_risk_score', None)
+    system_name = session.get('system_name', 'AI System')
+    now = datetime.now().strftime("%B %d, %Y at %I:%M %p")
+    
+    if result:
+        result = Markup(result)
+    
+    if not result and not error:
+        return redirect(url_for('index'))
+    
+    return render_template("report.html", result=result, error=error, scores=scores, 
+                          vendors=vendors, vendor_risk_score=vendor_risk_score,
+                          system_name=system_name, now=now)
 
 
 if __name__ == "__main__":
