@@ -129,4 +129,3 @@ It is not production software.
 
 Built by **Akriti Parida**
 
-Background in IT systems, observability, and analytics, now focused on **AI governance, responsible AI, and risk-aware product design**.
